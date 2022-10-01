@@ -9,6 +9,7 @@ class RandomSpawner:
     cave_moss: float
     granite: float
 
+    # TODO: Consider clustering to make the minimap look cooler :)
     def get_placement(self, value: float, x: int, y: int):
         if value < self.bombs:
             print(f"Placed a bomb at {x}, {y}!")
@@ -37,6 +38,7 @@ class RandomGenerator:
             for j in range(height):
                 val = random.randint(0, 100)
                 self.spawner.get_placement(val / 100., i, j)
+                # // grid, place thing  at (x,y)
 
         self.place_treasure()
         self.clear_a_path()
@@ -48,4 +50,6 @@ class RandomGenerator:
 
     def clear_a_path(self):
         """Simulate to ensure that a valid solution exists"""
+
+        ## ask grid for thing at location (x, y)
         pass
