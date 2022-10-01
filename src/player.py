@@ -49,7 +49,7 @@ class Player(Thing):
             self.x,
             self.y,
             self.sprite[self.frame].img,
-            self.sprite[self.frame].u,
+            self.sprite[self.frame].u,   
             self.sprite[self.frame].v,
             self.sprite[self.frame].w,
             self.sprite[self.frame].h,

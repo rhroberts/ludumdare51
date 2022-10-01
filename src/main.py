@@ -1,4 +1,5 @@
 import pyxel
+from config import WINDOW_WIDTH, WINDOW_HEIGHT
 from player import Player
 from sprite import Sprite
 
