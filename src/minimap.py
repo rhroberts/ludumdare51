@@ -19,7 +19,7 @@ class MiniMapState(Enum):
 
 class MiniMap:
     ## Here, X is horizontal Y is vertical
-    X, Y = (70, 70)
+    X, Y = (16, 5)
     WIDTH, HEIGHT = (61, 54)
     U, V = (0, 0)
     IMAGE_BANK = 2
