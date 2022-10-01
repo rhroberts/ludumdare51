@@ -3,7 +3,6 @@ import pyxel
 import entity
 from sprite import Sprite
 from config import Directions
-import ipdb
 
 
 class Player(entity.Entity):

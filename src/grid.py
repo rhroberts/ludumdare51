@@ -2,7 +2,6 @@ import pyxel
 from player import Player
 from sprite import Sprite
 from entity import Dirt
-import ipdb
 
 
 class Grid:

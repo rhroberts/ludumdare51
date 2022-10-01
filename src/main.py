@@ -9,6 +9,7 @@ from config import (
     GRID_COL_START,
     FPS
 )
+from minimap import MiniMap
 from grid import Grid
 
 
@@ -22,16 +23,20 @@ class App:
         setup_image_bank()
         self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
+        self.minimap = MiniMap()
         pyxel.run(self.update, self.draw)
 
     def update(self):
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
         self.grid.update()
+        self.minimap.update()
+
 
     def draw(self):
         pyxel.cls(0)
         self.grid.draw()
+        self.minimap.draw()
 
 
 App()
