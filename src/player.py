@@ -21,7 +21,7 @@ class Player:
                 self.y -= GRID_SIZE
             if pyxel.btnp(pyxel.KEY_DOWN):
                 self.y += GRID_SIZE
-    
+
     def draw(self):
         # pyxel.rect(self.x, self.y, 8, 8, 9)
         pyxel.blt(self.x, self.y, 0, 20, 20, self.w, self.h)
