@@ -13,9 +13,7 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        # self.x = (self.x + 1) % pyxel.width
         self.player.update()
-        ...
 
     def draw(self):
         pyxel.cls(0)
