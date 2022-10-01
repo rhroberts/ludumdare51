@@ -1,7 +1,7 @@
 import pyxel
 from player import Player
 from sprite import Sprite
-from entity import Dirt
+from entity import Dirt, Bomb
 
 
 class Grid:
@@ -26,6 +26,14 @@ class Grid:
             ) for i in range(8)
         ])
         self.set(self.player.m, self.player.n, self.player)
+        # init a bomb (TO BE REMOVED)
+        self.bomb = Bomb(self, 2, 10, [
+            Sprite(
+                0, 128 + i * self.pixel_dim, 0, self.pixel_dim, self.pixel_dim
+            ) for i in range(8)
+        ])
+        self.set(self.bomb.m, self.bomb.n, self.bomb)
+        
 
     def get(self, m, n):
         """Get the entity on the grid at m, n"""
@@ -41,6 +49,7 @@ class Grid:
 
     def update(self):
         self.player.update()
+        self.bomb.update()
 
     def draw(self):
         """Iterate over entities and call their draw() method"""
