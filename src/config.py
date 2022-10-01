@@ -1,7 +1,7 @@
 WINDOW_WIDTH = 256
 WINDOW_HEIGHT = 256
 
-GRID_DIM = 16  # square pixel dimension
+GRID_PIXEL_DIM = 16  # pixels per single, square grid dimension
 GRID_COLS = 14  # number of grid columns
 GRID_ROWS = 11  # number of grid rows
 GRID_ROW_START = 4  # row to start drawing grid

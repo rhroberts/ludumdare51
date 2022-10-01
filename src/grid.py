@@ -1,10 +1,13 @@
 import pyxel
+from player import Player
 from sprite import Sprite
 from entity import Dirt
+import ipdb
 
 
 class Grid:
-    def __init__(self, width, height, row_start, col_start):
+    def __init__(self, pixel_dim, width, height, row_start, col_start):
+        self.pixel_dim = pixel_dim
         self.width = width
         self.height = height
         self.row_start = row_start
@@ -12,19 +15,30 @@ class Grid:
         # initialize grid with dirt
         self.entities = [
             [
-                Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]) for n in range(
-                    self.col_start, self.width + self.col_start
-                )
-            ] for m in range(self.row_start, self.height + self.row_start)
+                Dirt(
+                    self, m, n, [Sprite(0, 0, 128, 16, 16)]
+                ) for n in range(self.width)
+            ] for m in range(self.height)
         ]
+        # init player
+        player = Player(self, 0, 10, [
+            Sprite(
+                0, i * self.pixel_dim, 0, self.pixel_dim, self.pixel_dim
+            ) for i in range(8)
+        ])
+        self.set(player.m, player.n, player)
 
-    def get(self, x, y):
-        """Get the entity on the grid at x, y"""
-        return self.entities[x][y]
+    def get(self, m, n):
+        """Get the entity on the grid at m, n"""
+        return self.entities[m][n]
 
-    def set(self, x, y, entity):
-        """Set the entity on the grid at x, y"""
-        self.entities[x][y] = entity
+    def set(self, m, n, entity):
+        """Set the entity on the grid at m, n"""
+        self.entities[m][n] = entity
+
+    def reset(self, m, n):
+        """Set the entity on grid at m, n back to dirt"""
+        self.set(m, n, Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]))
 
     def update(self):
         for row in self.entities:
@@ -36,8 +50,8 @@ class Grid:
         for row in self.entities:
             for entity in row:
                 pyxel.blt(
-                    entity.n * 16,
-                    entity.m * 16,
+                    (entity.n + self.col_start) * self.pixel_dim,
+                    (entity.m + self.row_start) * self.pixel_dim,
                     entity.sprite[entity.frame].img,
                     entity.sprite[entity.frame].u,
                     entity.sprite[entity.frame].v,

@@ -1,16 +1,16 @@
 from typing import List
 import pyxel
-from grid import Grid
 import entity
 from sprite import Sprite
 from config import Directions
+import ipdb
 
 
 class Player(entity.Entity):
     ANIM_COUNTER = 0
     ANIM_DURATION = 10
 
-    def __init__(self, grid: Grid, m, n, sprite: List[Sprite]):
+    def __init__(self, grid, m, n, sprite: List[Sprite]):
         self.grid = grid
         self.m = m
         self.n = n
@@ -21,24 +21,27 @@ class Player(entity.Entity):
 
     def move_sprite(self):
         """ Handle ↑ ↓ → ← key presses """
-        new_x, new_y = self.m, self.n
+        new_n, new_m = self.n, self.m
         if pyxel.btnp(pyxel.KEY_LEFT):
-            new_x = self.m - self.speed
+            new_n = self.n - self.speed
             self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            new_x = self.m + self.speed
+            new_n = self.n + self.speed
             self.direction = Directions.RIGHT
         if pyxel.btnp(pyxel.KEY_UP):
-            new_y = self.n - self.speed
+            new_m = self.m - self.speed
             self.direction = Directions.UP
         if pyxel.btnp(pyxel.KEY_DOWN):
-            new_y = self.n + self.speed
+            new_m = self.m + self.speed
             self.direction = Directions.DOWN
 
-        match type(self.grid.get(new_x, new_y)):
+        match type(self.grid.get(new_m, new_n)):
             case entity.Dirt:
-                self.m = new_x
-                self.n = new_y
+                self.grid.reset(self.m, self.n)
+                self.m = new_m
+                self.n = new_n
+                print(new_m, new_n)
+                self.grid.set(new_m, new_n, self)
             case entity.Bomb:
                 print("Game over!")
             case entity.Treasure:
