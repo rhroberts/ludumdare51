@@ -12,13 +12,13 @@ class App:
         setup_image_bank()
         self.player = Player(30, 10, [
             Sprite(0, 0, 0, 16, 16),
-            # Sprite(0, 16, 0, 16, 16),
+            Sprite(0, 16, 0, 16, 16),
             Sprite(0, 32, 0, 16, 16),
-            # Sprite(0, 48, 0, 16, 16),
+            Sprite(0, 48, 0, 16, 16),
             Sprite(0, 64, 0, 16, 16),
-            # Sprite(0, 80, 0, 16, 16),
+            Sprite(0, 80, 0, 16, 16),
             Sprite(0, 96, 0, 16, 16),
-            # Sprite(0, 112, 0, 16, 16),
+            Sprite(0, 112, 0, 16, 16),
         ])
         pyxel.run(self.update, self.draw)
 
