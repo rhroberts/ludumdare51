@@ -1,27 +1,26 @@
 import pyxel
+from thing import Thing
 from config import *
 
-class Player:
-    def __init__(self, x, y):
+class Player(Thing):
+    def __init__(self, x, y, sprite):
         self.x = x
         self.y = y
-        self.w = pyxel.image(0).width
-        self.h = pyxel.image(0).height
+        self.sprite = sprite
         self.direction = 1
-        self.fuel = 100
         self.moveable = True
+        self.speed = 1
 
     def update(self):
         if self.moveable:
             if pyxel.btnp(pyxel.KEY_LEFT):
-                self.x -= GRID_SIZE
+                self.x -= self.speed
             if pyxel.btnp(pyxel.KEY_RIGHT):
-                self.x += GRID_SIZE
+                self.x += self.speed
             if pyxel.btnp(pyxel.KEY_UP):
-                self.y -= GRID_SIZE
+                self.y -= self.speed
             if pyxel.btnp(pyxel.KEY_DOWN):
-                self.y += GRID_SIZE
+                self.y += self.speed
 
     def draw(self):
-        # pyxel.rect(self.x, self.y, 8, 8, 9)
-        pyxel.blt(self.x, self.y, 0, 20, 20, self.w, self.h)
+        pyxel.blt(self.x, self.y, self.sprite.img, self.sprite.u, self.sprite.v, self.sprite.w, self.sprite.h)
