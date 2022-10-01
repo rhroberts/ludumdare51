@@ -6,7 +6,7 @@ from grid import Grid
 
 
 def setup_image_bank():
-    pyxel.image(0).load(0, 0, "../assets/drill.png")
+    pyxel.image(0).load(0, 0, "../assets/sprites.png")
 
 
 class App:

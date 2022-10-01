@@ -10,7 +10,7 @@ class Grid:
         # initialize grid with dirt
         self.entities = [
             [
-                Dirt(self, m, n, [Sprite(0, 0, 0, 16, 16)]) for n in range(width)
+                Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]) for n in range(width)
             ] for m in range(height)
         ]
 
