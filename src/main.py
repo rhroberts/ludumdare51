@@ -1,10 +1,11 @@
 import pyxel
-from config import *
 from player import Player
 from sprite import Sprite
 
+
 def setup_image_bank():
     pyxel.image(0).load(20, 20, "../assets/drill.png")
+
 
 class App:
     def __init__(self):
@@ -21,5 +22,6 @@ class App:
     def draw(self):
         pyxel.cls(0)
         self.player.draw()
+
 
 App()
