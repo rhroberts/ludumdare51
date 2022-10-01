@@ -1,6 +1,6 @@
 import pyxel
 from thing import Thing
-from config import *
+
 
 class Player(Thing):
     def __init__(self, x, y, sprite):
