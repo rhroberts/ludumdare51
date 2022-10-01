@@ -3,9 +3,14 @@
 ## Development Setup
 
 ```bash
-# in repo root
+# create virtual environment
 python -m venv env
+# for bash:
 source env/bin/activate
+# for powershell:
+./scripts/activate
+# install dependencies
 pip install -r requirements.txt
-pip install -e .
+# run it
+python src/main.py
 ```
