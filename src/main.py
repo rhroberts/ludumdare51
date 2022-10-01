@@ -13,7 +13,7 @@ class Player:
 
 
 def setup_image_bank():
-    pyxel.image(0).load(20, 20, "../assets/sprites/drill.png")
+    pyxel.image(0).load(20, 20, "../assets/drill.png")
 
 
 class App:
@@ -22,7 +22,7 @@ class App:
         self.x = 0
 
         setup_image_bank()
-        
+
         self.player = Player()
 
         pyxel.run(self.update, self.draw)
