@@ -13,7 +13,7 @@ class Timer:
     is_ten_seconds = False;
 
     @classmethod
-    def start_timer(cls):
+    def start(cls):
         cls.started = True
 
     @classmethod
@@ -33,4 +33,6 @@ class Timer:
     @classmethod
     def is_ten_seconds(cls):
         """Returns true if this frame falls on a ten second interval, else false"""
+        if not cls.started:
+            raise RuntimeError("You never started the timer.")
         return cls.is_ten_seconds
