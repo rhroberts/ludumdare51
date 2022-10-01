@@ -1,6 +1,5 @@
 from typing import List
 from sprite import Sprite
-import ipdb
 
 
 class Entity:
