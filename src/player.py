@@ -34,17 +34,17 @@ class Player(entity.Entity):
             new_m = self.m + self.speed
             self.direction = Directions.DOWN
 
-        match type(self.grid.get(new_m, new_n)):
-            case entity.Dirt:
-                self.grid.reset(self.m, self.n)
-                self.m = new_m
-                self.n = new_n
-                print(new_m, new_n)
-                self.grid.set(new_m, new_n, self)
-            case entity.Bomb:
-                print("Game over!")
-            case entity.Treasure:
-                print("You win!")
+        if self.grid.is_valid_position(new_m, new_n):
+            match type(self.grid.get(new_m, new_n)):
+                case entity.Dirt:
+                    self.grid.reset(self.m, self.n)
+                    self.m = new_m
+                    self.n = new_n
+                    self.grid.set(new_m, new_n, self)
+                case entity.Bomb:
+                    print("Game over!")
+                case entity.Treasure:
+                    print("You win!")
 
     def increment_animation_counter(self):
         """ Progress animation counter. Reset if above animation duration. """
