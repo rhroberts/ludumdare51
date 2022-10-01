@@ -44,6 +44,8 @@ class App:
         pyxel.cls(0)
         self.grid.draw()
         self.minimap.draw()
+        if self.grid.player.game_over:
+            pyxel.text(WINDOW_WIDTH/2, WINDOW_HEIGHT*0.1, "GAME OVER!", 10)
 
 
 App()

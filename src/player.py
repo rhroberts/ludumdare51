@@ -10,41 +10,51 @@ class Player(entity.Entity):
     ANIM_DURATION = 10
 
     def __init__(self, grid, m, n, sprite: List[Sprite]):
-        self.grid = grid
-        self.m = m
-        self.n = n
-        self.sprite = sprite
+        super().__init__(grid, m, n, sprite)
         self.direction = Directions.DOWN
         self.speed = 1
         self.frame = 2*self.direction
+        self.game_over = False
 
     def move_sprite(self):
         """ Handle ↑ ↓ → ← key presses """
         new_n, new_m = self.n, self.m
         if pyxel.btnp(pyxel.KEY_LEFT):
-            new_n = self.n - self.speed
-            self.direction = Directions.LEFT
+            if not self.game_over:
+                arrow = "←"
+                new_n = self.n - self.speed
+                self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            new_n = self.n + self.speed
-            self.direction = Directions.RIGHT
+            if not self.game_over: 
+                arrow = "→"
+                new_n = self.n + self.speed
+                self.direction = Directions.RIGHT
         if pyxel.btnp(pyxel.KEY_UP):
-            new_m = self.m - self.speed
-            self.direction = Directions.UP
+            if not self.game_over:
+                arrow = "↑"
+                new_m = self.m - self.speed
+                self.direction = Directions.UP
         if pyxel.btnp(pyxel.KEY_DOWN):
-            new_m = self.m + self.speed
-            self.direction = Directions.DOWN
+            if not self.game_over:
+                arrow = "↓"
+                new_m = self.m + self.speed
+                self.direction = Directions.DOWN
 
-        if self.grid.is_valid_position(new_m, new_n):
-            match type(self.grid.get(new_m, new_n)):
-                case entity.Dirt:
+        match type(self.grid.get(new_m, new_n)):
+            case entity.Dirt:
+                if not self.game_over:
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
                     self.n = new_n
+                    print(arrow, new_m, new_n)
                     self.grid.set(new_m, new_n, self)
-                case entity.Bomb:
-                    print("Game over!")
-                case entity.Treasure:
-                    print("You win!")
+            case entity.Bomb:
+                bomb = self.grid.get(new_m, new_n)
+                bomb.detonate = True
+                self.game_over = True
+                print("Game over!")
+            case entity.Treasure:
+                print("You win!")
 
     def increment_animation_counter(self):
         """ Progress animation counter. Reset if above animation duration. """
