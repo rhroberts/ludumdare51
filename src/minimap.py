@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-import pyxel
-
 from enum import Enum
 
+import pyxel
+
+from config import FPS
 
 # less intense to more intense
 BACKGROUND = pyxel.COLOR_NAVY
@@ -27,8 +28,10 @@ class MiniMap:
     SCREEN_WIDTH, SCREEN_HEIGHT = (56, 44)
 
     def __init__(self):
-        self.state = MiniMapState.VISIBLE # TODO: update this
+        self.state = MiniMapState.VISIBLE
         pyxel.image(self.IMAGE_BANK).load(self.U, self.V, "../assets/minimap.png")
+
+        self.previous_frame_count = 0
 
         # Example state until grid provides
         self.example_obstacles = [(2, 2), (3, 4), (4, 4), (7, 8)]
@@ -45,7 +48,15 @@ class MiniMap:
 
     def update(self):
         # retrieve updated player path and update interal timer / flip state
-        pass
+
+        elapsed_seconds = (pyxel.frame_count - self.previous_frame_count) / FPS
+
+        if (self.state == MiniMapState.NOT_VISIBLE and elapsed_seconds == 10):
+            self.state = MiniMapState.VISIBLE
+            self.previous_frame_count = pyxel.frame_count
+        elif (self.state == MiniMapState.VISIBLE and elapsed_seconds == 1):
+            self.state = MiniMapState.NOT_VISIBLE
+            self.previous_frame_count = pyxel.frame_count
 
     def place_obstacles(self):
         for gx, gy in self.example_obstacles:
