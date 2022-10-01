@@ -4,14 +4,18 @@ from entity import Dirt
 
 
 class Grid:
-    def __init__(self, width, height):
+    def __init__(self, width, height, row_start, col_start):
         self.width = width
         self.height = height
+        self.row_start = row_start
+        self.col_start = col_start
         # initialize grid with dirt
         self.entities = [
             [
-                Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]) for n in range(width)
-            ] for m in range(height)
+                Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]) for n in range(
+                    self.col_start, self.width + self.col_start
+                )
+            ] for m in range(self.row_start, self.height + self.row_start)
         ]
 
     def get(self, x, y):
@@ -32,8 +36,8 @@ class Grid:
         for row in self.entities:
             for entity in row:
                 pyxel.blt(
-                    entity.m * self.height,
-                    entity.n * self.width,
+                    entity.n * 16,
+                    entity.m * 16,
                     entity.sprite[entity.frame].img,
                     entity.sprite[entity.frame].u,
                     entity.sprite[entity.frame].v,
