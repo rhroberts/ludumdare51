@@ -6,7 +6,8 @@ from config import (
     GRID_ROWS,
     GRID_COLS,
     GRID_ROW_START,
-    GRID_COL_START
+    GRID_COL_START,
+    FPS
 )
 from grid import Grid
 
@@ -17,7 +18,7 @@ def setup_image_bank():
 
 class App:
     def __init__(self):
-        pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!')
+        pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
         setup_image_bank()
         self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)

@@ -21,12 +21,12 @@ class Grid:
             ] for m in range(self.height)
         ]
         # init player
-        player = Player(self, 0, 10, [
+        self.player = Player(self, 0, 10, [
             Sprite(
                 0, i * self.pixel_dim, 0, self.pixel_dim, self.pixel_dim
             ) for i in range(8)
         ])
-        self.set(player.m, player.n, player)
+        self.set(self.player.m, self.player.n, self.player)
 
     def get(self, m, n):
         """Get the entity on the grid at m, n"""
@@ -41,9 +41,7 @@ class Grid:
         self.set(m, n, Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]))
 
     def update(self):
-        for row in self.entities:
-            for entity in row:
-                entity.update()
+        self.player.update()
 
     def draw(self):
         """Iterate over entities and call their draw() method"""
