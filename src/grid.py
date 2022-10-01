@@ -1,22 +1,42 @@
-from thing import Thing
+import pyxel
+from sprite import Sprite
+from entity import Dirt
 
 
 class Grid:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.entities = [[]]
+        # initialize grid with dirt
+        self.entities = [
+            [
+                Dirt(self, m, n, [Sprite(0, 0, 0, 16, 16)]) for n in range(width)
+            ] for m in range(height)
+        ]
 
-    def get(self, x, y) -> Thing:
+    def get(self, x, y):
         """Get the entity on the grid at x, y"""
         return self.entities[x][y]
 
-    def set(self, x, y, thing: Thing):
+    def set(self, x, y, entity):
         """Set the entity on the grid at x, y"""
-        self.entities[x][y] = thing
+        self.entities[x][y] = entity
+
+    def update(self):
+        for row in self.entities:
+            for entity in row:
+                entity.update()
 
     def draw(self):
         """Iterate over entities and call their draw() method"""
-        for i in range(len(self.entities)):
-            for j in range(len(self.entities[0])):
-                self.entities[i][j].draw()
+        for row in self.entities:
+            for entity in row:
+                pyxel.blt(
+                    entity.m * self.height,
+                    entity.n * self.width,
+                    entity.sprite[entity.frame].img,
+                    entity.sprite[entity.frame].u,
+                    entity.sprite[entity.frame].v,
+                    entity.sprite[entity.frame].w,
+                    entity.sprite[entity.frame].h,
+                )

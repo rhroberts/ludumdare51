@@ -1,7 +1,8 @@
 import pyxel
-from config import WINDOW_WIDTH, WINDOW_HEIGHT
+from config import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_WIDTH, GRID_HEIGHT
 from player import Player
 from sprite import Sprite
+from grid import Grid
 
 
 def setup_image_bank():
@@ -12,7 +13,8 @@ class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!')
         setup_image_bank()
-        self.player = Player(30, 10, [
+        self.grid = Grid(GRID_WIDTH, GRID_HEIGHT)
+        self.player = Player(self.grid, 0, 0, [
             Sprite(0, 0, 0, 16, 16),
             Sprite(0, 16, 0, 16, 16),
             Sprite(0, 32, 0, 16, 16),
@@ -27,11 +29,11 @@ class App:
     def update(self):
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
-        self.player.update()
+        self.grid.update()
 
     def draw(self):
         pyxel.cls(0)
-        self.player.draw()
+        self.grid.draw()
 
 
 App()
