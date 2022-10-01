@@ -39,6 +39,13 @@ class Grid:
         """Set the entity on grid at m, n back to dirt"""
         self.set(m, n, Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]))
 
+    def is_valid_position(self, m, n):
+        """Check if m, n is a valid position on the grid."""
+        if m >= 0 and m < self.height and n >= 0 and n < self.width:
+            return True
+        else:
+            return False
+
     def update(self):
         self.player.update()
 
