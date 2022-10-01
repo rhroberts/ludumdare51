@@ -1,4 +1,5 @@
 import pyxel
+
 from config import (
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
@@ -11,6 +12,7 @@ from config import (
 )
 from minimap import MiniMap
 from grid import Grid
+from timer import Timer
 
 
 def setup_image_bank():
@@ -24,11 +26,16 @@ class App:
         self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
         self.minimap = MiniMap()
+
+        Timer.start()
         pyxel.run(self.update, self.draw)
 
     def update(self):
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
+
+        Timer.update()
+
         self.grid.update()
         self.minimap.update()
 
