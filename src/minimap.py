@@ -69,6 +69,7 @@ class MiniMap:
     def update_interesting_objects(self):
         entity_map = self.grid.get_entities_by_type()
         self.obstacles = [(e.m, e.n) for e in [*entity_map[CaveMoss], *entity_map[Bomb]]]
+
         self.walls = [(e.m, e.n) for e in entity_map[Granite]]
         self.treasure =[(e.m, e.n) for e in entity_map[Treasure]][0]  # Only one treasure...
 
