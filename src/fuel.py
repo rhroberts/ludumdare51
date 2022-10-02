@@ -8,6 +8,7 @@ class Fuel:
     WIDTH, HEIGHT = (90, 25)
     time_decr = 0.05
     fuel_up = False
+    drain = False
     color = 3
 
     def __init__(self):
@@ -33,7 +34,7 @@ class Fuel:
     def update(self):
         self.increment_animation_counter()
         self.update_color()
-        self.fuel_level -= self.time_decr
+        if self.drain: self.fuel_level -= self.time_decr
 
     def draw(self):
         pyxel.blt(self.X-18, self.Y+6, 0, 0, 16, 16, 16)

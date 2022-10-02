@@ -16,10 +16,11 @@ class Player(entity.Entity):
         self.direction = Directions.DOWN
         self.speed = 1
         self.frame = 2*self.direction
-        self.moveable = True
+        self.moveable = False
         self.stunned = False
         self.game_over = False
         self.victory = False
+        self.set_visible()
 
     def move_sprite(self):
         """ Handle ↑ ↓ → ← key presses """
@@ -85,9 +86,8 @@ class Player(entity.Entity):
                     other.set_visible()
                 case entity.CaveMoss:
                     pyxel.play(2, 10)  # drill got stuck!
-                    cave_moss = self.grid.get(new_m, new_n)
-                    cave_moss.set_visible()
-                    cave_moss.impact = True
+                    other.set_visible()
+                    other.impact = True
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
                         self.m = new_m

@@ -24,6 +24,7 @@ class MiniMapState(Enum):
 
 
 class MiniMap:
+    FRAME_COUNTER = 0
     ## Here, X is horizontal Y is vertical
     X, Y = (16, 5)
     WIDTH, HEIGHT = (61, 54)
@@ -65,6 +66,7 @@ class MiniMap:
             self.static_screen.update()
         self.update_interesting_objects()
         self.player_trail.append(self.grid.get_player_position())
+        self.FRAME_COUNTER += 1
 
     def update_interesting_objects(self):
         entity_map = self.grid.get_entities_by_type()
@@ -74,14 +76,14 @@ class MiniMap:
         self.treasure =[(e.m, e.n) for e in entity_map[Treasure]][0]  # Only one treasure...
 
     def _flip_visibility(self):
-        elapsed_seconds = (pyxel.frame_count - self.previous_frame_count) / FPS
+        elapsed_seconds = (self.FRAME_COUNTER - self.previous_frame_count) / FPS
 
         if (self.state == MiniMapState.NOT_VISIBLE and self.state.visible_time == elapsed_seconds):
             self.state = MiniMapState.VISIBLE
-            self.previous_frame_count = pyxel.frame_count
+            self.previous_frame_count = self.FRAME_COUNTER
         elif (self.state == MiniMapState.VISIBLE and self.state.visible_time == elapsed_seconds):
             self.state = MiniMapState.NOT_VISIBLE
-            self.previous_frame_count = pyxel.frame_count
+            self.previous_frame_count = self.FRAME_COUNTER
 
     def place_obstacles(self):
         for gy, gx in self.obstacles:
@@ -214,6 +216,7 @@ class MiniMap:
 
 
 class StaticScreen:
+    FRAME_COUNTER = 0
 
     @dataclass
     class Bar:
@@ -229,11 +232,12 @@ class StaticScreen:
 
     def update(self):
         for bar in self.bars:
-            if pyxel.frame_count % 3 == 0:
+            if self.FRAME_COUNTER % 3 == 0:
                 bar.y +=1
             if bar.y > self.height + 20:
                 self.bars.pop()
                 self.bars.insert(0, self.Bar(-5, 3))
+        self.FRAME_COUNTER += 1
 
     def draw(self):
         pyxel.rect(self.x, self.y, self.width, self.height, pyxel.COLOR_GREEN)
