@@ -49,6 +49,7 @@ class Player(entity.Entity):
             other = self.grid.get(new_m, new_n)
             match type(other):
                 case entity.Dirt:
+                    pyxel.play(2, 9)  # drill through it!
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
                         self.m = new_m
@@ -76,6 +77,7 @@ class Player(entity.Entity):
                 case entity.Granite:
                     other.set_visible()
                 case entity.CaveMoss:
+                    pyxel.play(2, 10)  # drill got stuck!
                     other.set_visible()
                     cave_moss = self.grid.get(new_m, new_n)
                     cave_moss.impact = True
