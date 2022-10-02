@@ -2,7 +2,7 @@ from typing import List
 import pyxel
 import entity
 from sprite import Sprite
-from config import Directions
+from config import Directions, FUEL_CAN_ADDER
 
 
 class Player(entity.Entity):
@@ -30,7 +30,7 @@ class Player(entity.Entity):
                 new_n = self.n - self.speed
                 self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            if not self.game_over and self.moveable: 
+            if not self.game_over and self.moveable:
                 arrow = "→"
                 new_n = self.n + self.speed
                 self.direction = Directions.RIGHT
@@ -56,12 +56,17 @@ class Player(entity.Entity):
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
+                    if self.grid.fuel.fuel_level + FUEL_CAN_ADDER < 87.8:
+                        self.grid.fuel.fuel_level += FUEL_CAN_ADDER
+                    else:
+                        self.grid.fuel.fuel_level = 87.8
                     other.set_visible()
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
                     self.n = new_n
                     print(arrow, new_m, new_n)
                     self.grid.set(new_m, new_n, self)
+                    print("Fuel acquired!")
                 case entity.Bomb:
                     other.set_visible()
                     bomb = self.grid.get(new_m, new_n)
@@ -99,7 +104,7 @@ class Player(entity.Entity):
                 self.STUN_COUNTER = 0
                 self.stunned = False
                 self.moveable = True
-            
+
 
     def update_animation_frame(self):
         """ Determine frame in sprite sheet """

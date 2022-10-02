@@ -24,10 +24,10 @@ class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
         setup_image_bank()
-        self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
+        self.fuel = Fuel()
+        self.grid = Grid(self.fuel, GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
         self.minimap = MiniMap(self.grid)
-        self.fuel = Fuel()
 
         pyxel.run(self.update, self.draw)
 
