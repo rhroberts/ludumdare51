@@ -10,7 +10,6 @@ class Fuel:
 
     def update(self):
         self.fuel_level -= self.time_decr
-        print(self.fuel_level)
 
     def draw(self):
         pyxel.blt(self.X-18, self.Y+6, 0, 0, 16, 16, 16)
