@@ -236,9 +236,12 @@ class StaticScreen:
 
     def draw(self):
         pyxel.rect(self.x, self.y, self.width, self.height, pyxel.COLOR_GREEN)
-    
+
         for bar in self.bars:
             self._draw_static_bar(bar)
+
+        pyxel.text(self.x + 10, self.y + self.height - 30, 
+                   "Radar\nReturning\nin 10s..", pyxel.COLOR_WHITE)
 
     def _draw_static_bar(self, bar):
         if (bar.y + 1) <= 0:
