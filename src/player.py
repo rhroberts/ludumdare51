@@ -54,8 +54,12 @@ class Player(entity.Entity):
             other = self.grid.get(new_m, new_n)
             match type(other):
                 case entity.Dirt:
-                    pyxel.play(2, 9)  # drill through it!
                     if not self.game_over and self.moveable:
+                        if not other.dug:
+                            pyxel.play(2, 9)  # drill through it!
+                        else:
+                            pyxel.play(2, 16)  # drill through it again!
+
                         self.grid.reset(self.m, self.n)
                         self.m = new_m
                         self.n = new_n
@@ -76,13 +80,14 @@ class Player(entity.Entity):
                     self.grid.set(new_m, new_n, self)
                     print("Fuel acquired!")
                 case entity.Bomb:
-                    pyxel.playm(7)
+                    pyxel.playm(7)  # boom
                     other.set_visible()
                     bomb = self.grid.get(new_m, new_n)
                     bomb.detonate = True
                     self.game_over = True
                     print("Game over!")
                 case entity.Granite:
+                    pyxel.play(2, 17)  # boop
                     other.set_visible()
                 case entity.CaveMoss:
                     pyxel.play(2, 10)  # drill got stuck!
@@ -98,6 +103,9 @@ class Player(entity.Entity):
                         self.moveable = False
                     print("You've been cave moss'd!")
                 case entity.Treasure:
+                    pyxel.stop(3)
+                    #pyxel.play(2, 21)
+                    pyxel.playm(1)  # victory!
                     other.set_visible()
                     self.moveable = False
                     self.victory = True

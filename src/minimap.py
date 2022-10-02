@@ -5,13 +5,14 @@ from enum import Enum
 import pyxel
 
 from config import FPS
-from entity import CaveMoss, Bomb, Treasure, Granite
+from entity import CaveMoss, Bomb, FuelCan, Treasure, Granite
 
 # less intense to more intense
 BACKGROUND = pyxel.COLOR_NAVY
 WALL_GRADIENT = [pyxel.COLOR_DARK_BLUE, pyxel.COLOR_CYAN, pyxel.COLOR_LIGHT_BLUE]
 OBSTACLE_GRADIENT = [pyxel.COLOR_PURPLE, pyxel.COLOR_RED]
 TREASURE = pyxel.COLOR_YELLOW
+FUEL_CAN = pyxel.COLOR_LIME
 TRAIL = pyxel.COLOR_GRAY
 
 
@@ -48,11 +49,28 @@ class MiniMap:
         self.previous_frame_count = 0
 
         self.obstacles = [] #  [(2, 2), (3, 4), (4, 4), (7, 8)]
-        self.treasure = () # (8, 8)
         self.walls = [] # [(6, 6), (6, 7), (6, 8)]
+        self.fuel = []
+        self.treasure = () # (8, 8)
         self.player_trail = [] # [(6, 0), (6, 1), (6, 2), (7, 2)]
-        self.update_interesting_objects()
 
+        self.obstacle_buffer = [[]]
+        self.wall_buffer = [[]]
+
+        self.update_interesting_objects()
+        self.build_buffers()
+
+    def update(self):
+        self._flip_visibility()
+        if self.state == MiniMapState.NOT_VISIBLE:
+            self.static_screen.update()
+        self.update_interesting_objects()
+        self.build_buffers()
+        self.player_trail.append(self.grid.get_player_position())
+        self.FRAME_COUNTER += 1
+
+
+    def build_buffers(self):
         # arrays are longer than actual visible portion to avoid needing to check indices before stamping
         self.obstacle_buffer = [[0 for _ in range(self.WIDTH + 12)] for _ in range(self.HEIGHT + 12)]
         self.place_obstacles()
@@ -60,20 +78,15 @@ class MiniMap:
         self.wall_buffer = [[0 for _ in range(self.WIDTH + 12)] for _ in range(self.HEIGHT + 12)]
         self.place_walls()
 
-    def update(self):
-        self._flip_visibility()
-        if self.state == MiniMapState.NOT_VISIBLE:
-            self.static_screen.update()
-        self.update_interesting_objects()
-        self.player_trail.append(self.grid.get_player_position())
-        self.FRAME_COUNTER += 1
-
     def update_interesting_objects(self):
         entity_map = self.grid.get_entities_by_type()
-        self.obstacles = [(e.m, e.n) for e in [*entity_map[CaveMoss], *entity_map[Bomb]]]
-
-        self.walls = [(e.m, e.n) for e in entity_map[Granite]]
-        self.treasure =[(e.m, e.n) for e in entity_map[Treasure]][0]  # Only one treasure...
+        
+        self.obstacles = [(e.m, e.n) for e in [*entity_map[CaveMoss], *entity_map[Bomb]]] if CaveMoss in entity_map else []
+        self.walls = [(e.m, e.n) for e in entity_map[Granite]] if Granite in entity_map else []
+        self.fuel = [(e.m, e.n) for e in entity_map[FuelCan]] if FuelCan in entity_map else []
+    
+        # Only one treasure...
+        self.treasure =[(e.m, e.n) for e in entity_map[Treasure]][0]
 
     def _flip_visibility(self):
         elapsed_seconds = (self.FRAME_COUNTER - self.previous_frame_count) / FPS
@@ -198,6 +211,29 @@ class MiniMap:
                 self.Y + self.SCREEN_OFFSET_Y + self.treasure[0] * 4 + 2,
                 TREASURE)
 
+        # Draw Fuel Cans
+        for y, x in self.fuel:
+            pyxel.pset(
+                    self.X + self.SCREEN_OFFSET_X + x * 4 + 1,
+                    self.Y + self.SCREEN_OFFSET_Y + y * 4,
+                    FUEL_CAN)
+            pyxel.pset(
+                    self.X + self.SCREEN_OFFSET_X + x * 4 ,
+                    self.Y + self.SCREEN_OFFSET_Y + y * 4 + 1,
+                    FUEL_CAN)
+            pyxel.pset(
+                    self.X + self.SCREEN_OFFSET_X + x * 4 + 1,
+                    self.Y + self.SCREEN_OFFSET_Y + y * 4 + 1,
+                    FUEL_CAN)
+            pyxel.pset(
+                    self.X + self.SCREEN_OFFSET_X + x * 4 + 2,
+                    self.Y + self.SCREEN_OFFSET_Y + y * 4 + 1,
+                    FUEL_CAN)
+            pyxel.pset(
+                    self.X + self.SCREEN_OFFSET_X + x * 4 + 1,
+                    self.Y + self.SCREEN_OFFSET_Y + y * 4 + 2,
+                    FUEL_CAN)
+
         for i in range(len(self.player_trail) - 1):
             y1, x1 = self.player_trail[i]
             y2, x2 = self.player_trail[i + 1]
@@ -207,12 +243,6 @@ class MiniMap:
                 self.X + self.SCREEN_OFFSET_X + (x2 * 4) + 1,
                 self.Y + self.SCREEN_OFFSET_Y + y2 * 4,                
                 TRAIL)
-            # pyxel.rect(
-            #     self.X + self.SCREEN_OFFSET_X + x1 * 4, 
-            #     self.Y + self.SCREEN_OFFSET_Y + y1 * 4,
-            #     4, 
-            #     4, 
-            #     TRAIL)
 
 
 class StaticScreen:

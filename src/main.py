@@ -14,11 +14,16 @@ from fuel import Fuel
 from minimap import MiniMap
 from grid import Grid
 from player import Player
-from ui import UI
+from ui import UI, UiState
 
 
 def setup_image_bank():
     pyxel.image(0).load(0, 0, "../assets/sprites.png")
+
+
+def init_musak():
+    pyxel.play(3, 8, loop=True)  # drill drone
+    pyxel.playm(0, loop=True)  # muzak
 
 
 class App:
@@ -40,8 +45,8 @@ class App:
         self.fuel = None
         self.initialize_game_state()
 
-        pyxel.play(3, 8, loop=True)  # drill drone
-        pyxel.playm(0, loop=True)  # muzak
+        # audio
+        init_musak()
 
         pyxel.run(self.update, self.draw)
 
@@ -88,6 +93,7 @@ class App:
             self.ROW_COUNTER = GRID_ROWS - 1
             self.scanning = True
             self.initialize_game_state()
+            init_musak()
 
         self.update_scanner()
 
@@ -151,14 +157,14 @@ class App:
             self.grid.player.game_over = True
         if self.grid.player.game_over:
             self.fuel.time_decr = 0
-            pyxel.text(100, 30, "GAME\nOVER!", 10)
+            self.ui.set_state(UiState.LOSE)
             for row in self.grid.entities:
                 for entity in row:
                     if not isinstance(entity, Player):
                         entity.set_visible()
         if self.grid.player.victory:
             self.fuel.time_decr = 0
-            pyxel.text(100, 30, "YOU\nWIN!", 10)
+            self.ui.set_state(UiState.WIN)
             for row in self.grid.entities:
                 for entity in row:
                     if not isinstance(entity, Player):

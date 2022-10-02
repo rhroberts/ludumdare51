@@ -51,14 +51,14 @@ class Bomb(Entity):
     def increment_animation_counter(self):
         """ Progress animation counter. Reset if above animation duration. """
         self.ANIM_COUNTER = self.ANIM_COUNTER + 1 if self.ANIM_COUNTER < self.ANIM_DURATION else 0
-    
+
     def update_animation_frame(self):
         """ Determine frame in sprite sheet """
         if not self.transitioned:
             self.frame = self.transition_frame
         else:
             self.frame = self.transition_frame + (2 if self.ANIM_COUNTER <= self.ANIM_DURATION/2 else 1)
-    
+
     def update(self):
         """ Update Bomb """
         if self.detonate:
@@ -80,4 +80,6 @@ class Treasure(Entity):
     pass
 
 class Dirt(Entity):
-    pass
+    def __init__(self, grid, m, n, sprite: List[Sprite], dug=False):
+        super().__init__(grid, m, n, sprite)
+        self.dug = dug
