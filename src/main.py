@@ -21,6 +21,11 @@ def setup_image_bank():
     pyxel.image(0).load(0, 0, "../assets/sprites.png")
 
 
+def init_musak():
+    pyxel.play(3, 8, loop=True)  # drill drone
+    pyxel.playm(0, loop=True)  # muzak
+
+
 class App:
     FRAME_COUNTER = 0
 
@@ -37,8 +42,8 @@ class App:
         self.fuel = None
         self.initialize_game_state()
 
-        pyxel.play(3, 8, loop=True)  # drill drone
-        pyxel.playm(0, loop=True)  # muzak
+        # audio
+        init_musak()
 
         pyxel.run(self.update, self.draw)
 
@@ -54,6 +59,7 @@ class App:
         if pyxel.btnp(pyxel.KEY_R):
             self.FRAME_COUNTER = 0
             self.initialize_game_state()
+            init_musak()
 
         # One-time blink out all the sprites
         if self.FRAME_COUNTER / FPS == 3:
