@@ -1,8 +1,10 @@
+import random
 from dataclasses import dataclass
-import pyxel
-
 from enum import Enum
 
+import pyxel
+
+from config import FPS
 
 # less intense to more intense
 BACKGROUND = pyxel.COLOR_NAVY
@@ -13,8 +15,11 @@ TRAIL = pyxel.COLOR_GRAY
 
 
 class MiniMapState(Enum):
-    VISIBLE = 1,
-    NOT_VISIBLE = 2
+    VISIBLE = 2,
+    NOT_VISIBLE = 10
+    
+    def __init__(self, visible_time: int):
+        self.visible_time = visible_time
 
 
 class MiniMap:
@@ -22,40 +27,61 @@ class MiniMap:
     X, Y = (16, 5)
     WIDTH, HEIGHT = (61, 54)
     U, V = (0, 0)
+    # STATIC_U, STATIC_V = (62, 0)
     IMAGE_BANK = 2
     SCREEN_OFFSET_X, SCREEN_OFFSET_Y = (3, 7)
     SCREEN_WIDTH, SCREEN_HEIGHT = (56, 44)
 
     def __init__(self):
-        self.state = MiniMapState.VISIBLE # TODO: update this
+        self.state = MiniMapState.VISIBLE
         pyxel.image(self.IMAGE_BANK).load(self.U, self.V, "../assets/minimap.png")
+        # pyxel.image(self.IMAGE_BANK).load(self.STATIC_U, self.STATIC_V, "../assets/green_static.png")
+
+        self.static_screen = StaticScreen(self.X + self.SCREEN_OFFSET_X, 
+                                          self.Y + self.SCREEN_OFFSET_Y, 
+                                          self.SCREEN_WIDTH, 
+                                          self.SCREEN_HEIGHT)
+
+        self.previous_frame_count = 0
 
         # Example state until grid provides
-        self.example_obstacles = [(2, 2), (3, 4), (4, 4), (7, 8)]
-        self.example_treasure = (8, 8)
-        self.example_walls = [(6, 6), (6, 7), (6, 8)]
-        self.example_trail = [(6, 0), (6, 1), (6, 2), (7, 2)]
+        self.obstacles = [(2, 2), (3, 4), (4, 4), (7, 8)]
+        self.treasure = (8, 8)
+        self.walls = [(6, 6), (6, 7), (6, 8)]
+        self.trail = [(6, 0), (6, 1), (6, 2), (7, 2)]
 
         # arrays are longer than actual visible portion to avoid needing to check indices before stamping
-        self.obstacle_map = [[0 for _ in range(self.HEIGHT + 12)] for _ in range(self.WIDTH + 12)]
+        self.obstacle_buffer = [[0 for _ in range(self.HEIGHT + 12)] for _ in range(self.WIDTH + 12)]
         self.place_obstacles()
 
-        self.wall_map = [[0 for _ in range(self.HEIGHT + 12)] for _ in range(self.WIDTH + 12)]
+        self.wall_buffer = [[0 for _ in range(self.HEIGHT + 12)] for _ in range(self.WIDTH + 12)]
         self.place_walls()
 
     def update(self):
-        # retrieve updated player path and update interal timer / flip state
-        pass
+        # TODO: retrieve updated player path
+        self._flip_visibility()
+        if self.state == MiniMapState.NOT_VISIBLE:
+            self.static_screen.update()
+
+    def _flip_visibility(self):
+        elapsed_seconds = (pyxel.frame_count - self.previous_frame_count) / FPS
+
+        if (self.state == MiniMapState.NOT_VISIBLE and self.state.visible_time == elapsed_seconds):
+            self.state = MiniMapState.VISIBLE
+            self.previous_frame_count = pyxel.frame_count
+        elif (self.state == MiniMapState.VISIBLE and self.state.visible_time == elapsed_seconds):
+            self.state = MiniMapState.NOT_VISIBLE
+            self.previous_frame_count = pyxel.frame_count
 
     def place_obstacles(self):
-        for gx, gy in self.example_obstacles:
+        for gx, gy in self.obstacles:
             mx, my = (gx * 4), (gy * 4)  # upper left corner
-            self.stamp(mx, my, self.obstacle_map)
+            self.stamp(mx, my, self.obstacle_buffer)
 
     def place_walls(self):
-        for gx, gy in self.example_walls:
+        for gx, gy in self.walls:
             mx, my = (gx * 4), (gy * 4)
-            self.stamp(mx, my, self.wall_map)
+            self.stamp(mx, my, self.wall_buffer)
 
     @staticmethod
     def stamp(mx, my, map):
@@ -95,14 +121,11 @@ class MiniMap:
         pyxel.blt(self.X, self.Y, self.IMAGE_BANK, self.U, self.V, self.WIDTH, self.HEIGHT)
 
         if self.state == MiniMapState.VISIBLE:
-            self.draw_map()
+            self._draw_map()
         else:
-            self.draw_static()
+            self.static_screen.draw()
 
-    def draw_static(self):
-        pass
-
-    def draw_map(self):
+    def _draw_map(self):
         pyxel.rect(
             self.X + self.SCREEN_OFFSET_X,
             self.Y + self.SCREEN_OFFSET_Y,
@@ -113,7 +136,7 @@ class MiniMap:
         # iterate over and draw the map.
         for m in range(self.SCREEN_HEIGHT):
             for n in range(self.SCREEN_HEIGHT):
-                wall_value = self.wall_map[m][n]
+                wall_value = self.wall_buffer[m][n]
                 if wall_value == 1:
                     pyxel.pset(
                         self.X + self.SCREEN_OFFSET_X + n,
@@ -130,7 +153,7 @@ class MiniMap:
                         self.Y + self.SCREEN_OFFSET_Y + m,
                         WALL_GRADIENT[2])
 
-                obstacle_value = self.obstacle_map[m][n]
+                obstacle_value = self.obstacle_buffer[m][n]
                 if obstacle_value == 1:
                     pyxel.pset(
                         self.X + self.SCREEN_OFFSET_X + n,
@@ -143,29 +166,29 @@ class MiniMap:
                         OBSTACLE_GRADIENT[1])
 
         pyxel.pset(
-                self.X + self.SCREEN_OFFSET_X + self.example_treasure[0] * 4 + 1,
-                self.Y + self.SCREEN_OFFSET_Y + self.example_treasure[1] * 4,
+                self.X + self.SCREEN_OFFSET_X + self.treasure[0] * 4 + 1,
+                self.Y + self.SCREEN_OFFSET_Y + self.treasure[1] * 4,
                 TREASURE)
         pyxel.pset(
-                self.X + self.SCREEN_OFFSET_X + self.example_treasure[0] * 4 ,
-                self.Y + self.SCREEN_OFFSET_Y + self.example_treasure[1] * 4 + 1,
+                self.X + self.SCREEN_OFFSET_X + self.treasure[0] * 4 ,
+                self.Y + self.SCREEN_OFFSET_Y + self.treasure[1] * 4 + 1,
                 TREASURE)
         pyxel.pset(
-                self.X + self.SCREEN_OFFSET_X + self.example_treasure[0] * 4 + 1,
-                self.Y + self.SCREEN_OFFSET_Y + self.example_treasure[1] * 4 + 1,
+                self.X + self.SCREEN_OFFSET_X + self.treasure[0] * 4 + 1,
+                self.Y + self.SCREEN_OFFSET_Y + self.treasure[1] * 4 + 1,
                 TREASURE)
         pyxel.pset(
-                self.X + self.SCREEN_OFFSET_X + self.example_treasure[0] * 4 + 2,
-                self.Y + self.SCREEN_OFFSET_Y + self.example_treasure[1] * 4 + 1,
+                self.X + self.SCREEN_OFFSET_X + self.treasure[0] * 4 + 2,
+                self.Y + self.SCREEN_OFFSET_Y + self.treasure[1] * 4 + 1,
                 TREASURE)
         pyxel.pset(
-                self.X + self.SCREEN_OFFSET_X + self.example_treasure[0] * 4 + 1,
-                self.Y + self.SCREEN_OFFSET_Y + self.example_treasure[1] * 4 + 2,
+                self.X + self.SCREEN_OFFSET_X + self.treasure[0] * 4 + 1,
+                self.Y + self.SCREEN_OFFSET_Y + self.treasure[1] * 4 + 2,
                 TREASURE)
 
-        for i in range(len(self.example_trail) - 1):
-            x1, y1 = self.example_trail[i]
-            x2, y2 = self.example_trail[i + 1]
+        for i in range(len(self.trail) - 1):
+            x1, y1 = self.trail[i]
+            x2, y2 = self.trail[i + 1]
             pyxel.line(
                 self.X + self.SCREEN_OFFSET_X + (x1 * 4) + 1,
                 self.Y + self.SCREEN_OFFSET_Y + y1 * 4,
@@ -178,3 +201,53 @@ class MiniMap:
             #     4, 
             #     4, 
             #     TRAIL)
+
+
+class StaticScreen:
+
+    @dataclass
+    class Bar:
+        y: int
+        thickness: int
+
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.bars = [self.Bar(i, 3) for i in range(-5, height + 20, 5)]
+
+    def update(self):
+        for bar in self.bars:
+            if pyxel.frame_count % 3 == 0:
+                bar.y +=1
+            if bar.y > self.height + 20:
+                self.bars.pop()
+                self.bars.insert(0, self.Bar(-5, 3))
+
+    def draw(self):
+        pyxel.rect(self.x, self.y, self.width, self.height, pyxel.COLOR_GREEN)
+    
+        for bar in self.bars:
+            self._draw_static_bar(bar)
+
+    def _draw_static_bar(self, bar):
+        if (bar.y + 1) <= 0:
+            return
+        
+        if bar.y >= (self.height - 3):
+            return
+
+        pyxel.rect(
+            self.x,
+            self.y + bar.y,
+            self.width // 2,
+            bar.thickness,
+            pyxel.COLOR_LIME)
+
+        pyxel.rect(
+            self.x + self.width // 2,
+            self.y + bar.y + 1,
+            self.width // 2,
+            bar.thickness,
+            pyxel.COLOR_LIME)

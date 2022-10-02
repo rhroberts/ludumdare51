@@ -13,7 +13,6 @@ from config import (
 from fuel import Fuel
 from minimap import MiniMap
 from grid import Grid
-from timer import Timer
 
 
 def setup_image_bank():
@@ -29,15 +28,12 @@ class App:
         self.minimap = MiniMap()
         self.fuel = Fuel()
 
-        Timer.start()
         pyxel.run(self.update, self.draw)
 
     def update(self):
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
 
-        Timer.update()
-        
         self.grid.update()
         self.minimap.update()
         self.fuel.update()
@@ -49,6 +45,5 @@ class App:
         self.fuel.draw()
         if self.grid.player.game_over:
             pyxel.text(WINDOW_WIDTH/2, WINDOW_HEIGHT*0.1, "GAME OVER!", 10)
-
 
 App()
