@@ -1,7 +1,7 @@
 import random
 
 from sprite import Sprite
-from entity import Dirt, Bomb, CaveMoss, Treasure
+from entity import Dirt, Bomb, CaveMoss, Treasure, Granite
 
 EASY_RANDOM_SPAWNER = (0.1, 0.1, 0.1)
 MEDIUM_RANDOM_SPAWNER = (0.1, 0.2, 0.2)
@@ -39,10 +39,10 @@ class RandomSpawner:
                 ])
         elif value < (self.bombs + self.cave_moss + self.granite):
             print(f"Placed granite at {x}, {y}!")
-            return Dirt(self.grid, x, y, [Sprite(
+            return Granite(self.grid, x, y, [Sprite(
                 0,
-                0,
-                144,
+                48,
+                16,
                 self.grid.pixel_dim,
                 self.grid.pixel_dim)
                 ])

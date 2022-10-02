@@ -49,6 +49,9 @@ class CaveMoss(Entity):
 class FuelCan(Entity):
     pass
 
+class Granite(Entity):
+    pass
+
 class Treasure(Entity):
     pass
 
