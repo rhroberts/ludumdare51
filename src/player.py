@@ -19,6 +19,7 @@ class Player(entity.Entity):
         self.moveable = True
         self.stunned = False
         self.game_over = False
+        self.victory = False
 
     def move_sprite(self):
         """ Handle ↑ ↓ → ← key presses """
@@ -71,6 +72,8 @@ class Player(entity.Entity):
                         self.moveable = False
                     print("You've been cave moss'd!")
                 case entity.Treasure:
+                    self.moveable = False
+                    self.victory = True
                     print("You win!")
 
     def increment_animation_counter(self):

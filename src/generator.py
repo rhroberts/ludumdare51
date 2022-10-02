@@ -1,8 +1,7 @@
 import random
 
-from player import Player
 from sprite import Sprite
-from entity import Dirt, Bomb, CaveMoss
+from entity import Dirt, Bomb, CaveMoss, Treasure
 
 EASY_RANDOM_SPAWNER = (0.1, 0.1, 0.1)
 MEDIUM_RANDOM_SPAWNER = (0.1, 0.2, 0.2)
@@ -27,7 +26,7 @@ class RandomSpawner:
                 self.grid.pixel_dim,
                 self.grid.pixel_dim)
                 for i in range(8)
-                ]),
+                ])
         elif value < (self.bombs + self.cave_moss):
             print(f"Placed cave moss at {x}, {y}!")
             return CaveMoss(self.grid, x, y, [Sprite(
@@ -83,6 +82,7 @@ class RandomGenerator:
         x = random.randint(0, self.width)
         y = random.randint(0, self.height)
         print(f"Placed treasure at {x}, {y}")
+        self.entities[x][y] = Treasure(0, x, y, [Sprite(0, 32, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
     
     def get_entities(self):
         return self.entities
