@@ -44,8 +44,8 @@ class App:
         self.minimap.draw()
         self.fuel.draw()
         if self.grid.player.game_over:
-            pyxel.text(WINDOW_WIDTH/2, WINDOW_HEIGHT*0.1, "GAME OVER!", 10)
+            pyxel.text(100, 30, "GAME\nOVER!", 10)
         if self.grid.player.victory:
-            pyxel.text(WINDOW_WIDTH/2, WINDOW_HEIGHT*0.1, "YOU WIN!", 10)
+            pyxel.text(100, 30, "YOU\WIN!", 10)
 
 App()

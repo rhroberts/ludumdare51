@@ -1,14 +1,13 @@
 import pyxel
 
 class Fuel:
-    X, Y = (150, 25)
+    X, Y = (150, 22)
     WIDTH, HEIGHT = (90, 25)
     time_count = 0
     time_dilation = 10
     fuel_level = 0
 
     def update(self):
-       
         ...
 
     def draw(self):
