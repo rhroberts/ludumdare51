@@ -64,9 +64,10 @@ class Grid:
 
     def update(self):
         self.player.update()
-        # TO BE REMOVED
-        # self.bomb.update()
-        # self.cave_moss.update()
+        for n in range(0, self.width):
+            for m in range(0, self.height):
+                if isinstance(self.entities[m][n], Bomb):
+                    self.entities[m][n].update()
 
     def draw(self):
         """Iterate over entities and call their draw() method"""
