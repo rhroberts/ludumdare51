@@ -22,6 +22,8 @@ def setup_image_bank():
 
 
 class App:
+    FRAME_COUNTER = 0
+
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
         pyxel.load("../assets/default.pyxres")  # load asset file with music/fx
@@ -50,10 +52,11 @@ class App:
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
         if pyxel.btnp(pyxel.KEY_R):
+            self.FRAME_COUNTER = 0
             self.initialize_game_state()
 
         # One-time blink out all the sprites
-        if pyxel.frame_count / FPS == 3:
+        if self.FRAME_COUNTER / FPS == 3:
             for row in self.grid.entities:
                 for entity in row:
                     if not isinstance(entity, Player):
@@ -62,6 +65,7 @@ class App:
         self.grid.update()
         self.minimap.update()
         self.fuel.update()
+        self.FRAME_COUNTER += 1
 
     def draw(self):
         pyxel.cls(0)
