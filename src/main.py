@@ -10,6 +10,7 @@ from config import (
     GRID_COL_START,
     FPS
 )
+from fuel import Fuel
 from minimap import MiniMap
 from grid import Grid
 
@@ -25,6 +26,7 @@ class App:
         self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
         self.minimap = MiniMap()
+        self.fuel = Fuel()
 
         pyxel.run(self.update, self.draw)
 
@@ -32,12 +34,18 @@ class App:
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
 
+        Timer.update()
+        
         self.grid.update()
         self.minimap.update()
+        self.fuel.update()
 
     def draw(self):
         pyxel.cls(0)
         self.grid.draw()
         self.minimap.draw()
+        self.fuel.draw()
+        if self.grid.player.game_over:
+            pyxel.text(WINDOW_WIDTH/2, WINDOW_HEIGHT*0.1, "GAME OVER!", 10)
 
 App()
