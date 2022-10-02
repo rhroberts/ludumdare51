@@ -22,9 +22,9 @@ def setup_image_bank():
 
 
 def init_musak():
-    pyxel.play(3, 8, loop=True)  # drill drone
-    pyxel.playm(0, loop=True)  # muzak
-
+    # pyxel.play(3, 8, loop=True)  # drill drone
+    #pyxel.playm(0, loop=True)  # muzak
+    pass
 
 class App:
     FRAME_COUNTER = 0
@@ -113,7 +113,7 @@ class App:
         # Print message
         if print_logic or lower_logic:
             pyxel.text(157, 12, "STUDY THE TERRAIN!", 10)
-        
+
         # Draw top rectangle
         if upper_logic:
             pyxel.rect(

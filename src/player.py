@@ -104,7 +104,7 @@ class Player(entity.Entity):
                     print("You've been cave moss'd!")
                 case entity.Treasure:
                     pyxel.stop(3)
-                    #pyxel.play(2, 21)
+                    # pyxel.play(2, 21)
                     pyxel.playm(1)  # victory!
                     other.set_visible()
                     self.moveable = False
