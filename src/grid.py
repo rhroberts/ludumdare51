@@ -5,7 +5,8 @@ from entity import Dirt, Bomb, CaveMoss
 from generator import RandomGenerator, RandomSpawner, MEDIUM_RANDOM_SPAWNER
 
 class Grid:
-    def __init__(self, pixel_dim, width, height, row_start, col_start):
+    def __init__(self, fuel, pixel_dim, width, height, row_start, col_start):
+        self.fuel = fuel
         self.pixel_dim = pixel_dim
         self.width = width
         self.height = height
