@@ -56,7 +56,7 @@ class Player(entity.Entity):
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
-                    entity.set_visible()
+                    other.set_visible()
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
                     self.n = new_n
@@ -68,6 +68,8 @@ class Player(entity.Entity):
                     bomb.detonate = True
                     self.game_over = True
                     print("Game over!")
+                case entity.Granite:
+                    other.set_visible()
                 case entity.CaveMoss:
                     other.set_visible()
                     cave_moss = self.grid.get(new_m, new_n)

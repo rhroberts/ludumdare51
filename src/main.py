@@ -54,6 +54,6 @@ class App:
         if self.grid.player.game_over:
             pyxel.text(100, 30, "GAME\nOVER!", 10)
         if self.grid.player.victory:
-            pyxel.text(100, 30, "YOU\WIN!", 10)
+            pyxel.text(100, 30, "YOU\nWIN!", 10)
 
 App()
