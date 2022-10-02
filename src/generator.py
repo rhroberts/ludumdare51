@@ -1,7 +1,8 @@
 import random
 
 from sprite import Sprite
-from entity import Dirt, Bomb, CaveMoss, Treasure, Granite
+from entity import Dirt, Bomb, CaveMoss, Treasure, Granite, FuelCan
+from config import NUM_FUEL_CANS
 
 EASY_RANDOM_SPAWNER = (0.1, 0.1, 0.1)
 MEDIUM_RANDOM_SPAWNER = (0.1, 0.2, 0.2)
@@ -75,14 +76,22 @@ class RandomGenerator:
                 entity = self.spawner.get_placement(val / 100., i, j)
                 self.entities[i].append(entity)
 
+        self.place_fuel_cans()
         self.place_treasure()
         self.clear_a_path()
 
     def place_treasure(self):
-        x = random.randint(0, self.width)
-        y = random.randint(0, self.height)
+        x = random.randint(int(0.8*self.height), self.height-1)
+        y = random.randint(0, self.width-1)
         print(f"Placed treasure at {x}, {y}")
         self.entities[x][y] = Treasure(0, x, y, [Sprite(0, 32, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
+    
+    def place_fuel_cans(self):
+        for _ in range(NUM_FUEL_CANS):
+            x = random.randint(0, self.height-1)
+            y = random.randint(0, self.width-1)
+            print(f"Placed fuel can at {x}, {y}")
+            self.entities[x][y] = FuelCan(0, x, y, [Sprite(0, 0, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
     
     def get_entities(self):
         return self.entities

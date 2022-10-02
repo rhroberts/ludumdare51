@@ -18,7 +18,7 @@ class Grid:
             self.width,
             self.height,
             RandomSpawner(self, *MEDIUM_RANDOM_SPAWNER),
-            seed=3
+            # seed=3
             )
         self.entities = gen_grid.get_entities()
 
