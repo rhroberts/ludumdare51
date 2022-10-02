@@ -1,7 +1,7 @@
 import pyxel
 from player import Player
 from sprite import Sprite
-from entity import Dirt, Bomb
+from entity import Dirt, Bomb, CaveMoss
 
 
 class Grid:
@@ -33,6 +33,13 @@ class Grid:
             ) for i in range(8)
         ])
         self.set(self.bomb.m, self.bomb.n, self.bomb)
+        # init a cave_moss (TO BE REMOVED)
+        self.cave_moss = CaveMoss(self, 10, 3, [
+            Sprite(
+                0, self.pixel_dim, self.pixel_dim, self.pixel_dim, self.pixel_dim
+            )
+        ])
+        self.set(self.cave_moss.m, self.cave_moss.n, self.cave_moss)
         
 
     def get(self, m, n):

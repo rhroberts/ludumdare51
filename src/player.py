@@ -14,35 +14,36 @@ class Player(entity.Entity):
         self.direction = Directions.DOWN
         self.speed = 1
         self.frame = 2*self.direction
+        self.moveable = True
         self.game_over = False
 
     def move_sprite(self):
         """ Handle ↑ ↓ → ← key presses """
         new_n, new_m = self.n, self.m
         if pyxel.btnp(pyxel.KEY_LEFT):
-            if not self.game_over:
+            if not self.game_over and self.moveable:
                 arrow = "←"
                 new_n = self.n - self.speed
                 self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            if not self.game_over: 
+            if not self.game_over and self.moveable: 
                 arrow = "→"
                 new_n = self.n + self.speed
                 self.direction = Directions.RIGHT
         if pyxel.btnp(pyxel.KEY_UP):
-            if not self.game_over:
+            if not self.game_over and self.moveable:
                 arrow = "↑"
                 new_m = self.m - self.speed
                 self.direction = Directions.UP
         if pyxel.btnp(pyxel.KEY_DOWN):
-            if not self.game_over:
+            if not self.game_over and self.moveable:
                 arrow = "↓"
                 new_m = self.m + self.speed
                 self.direction = Directions.DOWN
 
         match type(self.grid.get(new_m, new_n)):
             case entity.Dirt:
-                if not self.game_over:
+                if not self.game_over and self.moveable:
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
                     self.n = new_n
