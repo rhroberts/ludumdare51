@@ -34,6 +34,18 @@ class Grid:
         """Get the entity on the grid at m, n"""
         return self.entities[m][n]
 
+    def get_entities_by_type(self):
+        entity_map = {}
+        for row in self.entities:
+            for entity in row:
+                if type(entity) not in entity_map:
+                    entity_map[type(entity)] = []
+                entity_map[type(entity)].append(entity)
+        return entity_map
+
+    def get_player_position(self):
+        return (self.player.m, self.player.n)
+
     def set(self, m, n, entity):
         """Set the entity on the grid at m, n"""
         self.entities[m][n] = entity

@@ -25,7 +25,7 @@ class App:
         setup_image_bank()
         self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
-        self.minimap = MiniMap()
+        self.minimap = MiniMap(self.grid)
         self.fuel = Fuel()
 
         pyxel.run(self.update, self.draw)
@@ -35,7 +35,7 @@ class App:
             pyxel.quit()
 
         self.grid.update()
-        self.minimap.update()
+        self.minimap.update() 
         self.fuel.update()
 
     def draw(self):

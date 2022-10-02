@@ -16,10 +16,10 @@ class RandomSpawner:
         self.granite = granite
 
     # TODO: Consider clustering to make the minimap look cooler :)
-    def get_placement(self, value: float, x: int, y: int):
+    def get_placement(self, value: float, m: int, n: int):
         if value < self.bombs:
-            print(f"Placed a bomb at {x}, {y}!")
-            return Bomb(self.grid, x, y, [Sprite(
+            print(f"Placed a bomb at {m}, {n}!")
+            return Bomb(self.grid, m, n, [Sprite(
                 0,
                 128 + i * self.grid.pixel_dim,
                 0,
@@ -28,8 +28,8 @@ class RandomSpawner:
                 for i in range(8)
                 ])
         elif value < (self.bombs + self.cave_moss):
-            print(f"Placed cave moss at {x}, {y}!")
-            return CaveMoss(self.grid, x, y, [Sprite(
+            print(f"Placed cave moss at {m}, {n}!")
+            return CaveMoss(self.grid, m, n, [Sprite(
                 0,
                 self.grid.pixel_dim + i * self.grid.pixel_dim,
                 self.grid.pixel_dim,
@@ -38,8 +38,8 @@ class RandomSpawner:
                 for i in range(2)
                 ])
         elif value < (self.bombs + self.cave_moss + self.granite):
-            print(f"Placed granite at {x}, {y}!")
-            return Granite(self.grid, x, y, [Sprite(
+            print(f"Placed granite at {m}, {n}!")
+            return Granite(self.grid, m, n, [Sprite(
                 0,
                 48,
                 16,
@@ -47,7 +47,7 @@ class RandomSpawner:
                 self.grid.pixel_dim)
                 ])
         else:
-            return Dirt(self.grid, x, y, [Sprite(
+            return Dirt(self.grid, m, n, [Sprite(
                 0,
                 0,
                 128,
@@ -73,6 +73,7 @@ class RandomGenerator:
             for j in range(self.width):
                 val = random.randint(0, 100)
                 entity = self.spawner.get_placement(val / 100., i, j)
+                print(f"Spawned {entity} at {i}, {j}")
                 self.entities[i].append(entity)
 
         self.place_treasure()
@@ -89,7 +90,6 @@ class RandomGenerator:
 
     def clear_a_path(self):
         """Simulate to ensure that a valid solution exists"""
-
         ## ask grid for thing at location (x, y)
         pass
 
