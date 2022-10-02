@@ -85,14 +85,14 @@ class RandomGenerator:
         x = random.randint(int(0.8*self.height), self.height-1)
         y = random.randint(0, self.width-1)
         print(f"Placed treasure at {x}, {y}")
-        self.entities[x][y] = Treasure(0, x, y, [Sprite(0, 32, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
+        self.entities[x][y] = Treasure(self.grid, x, y, [Sprite(0, 32, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
     
     def place_fuel_cans(self):
         for _ in range(NUM_FUEL_CANS):
             x = random.randint(0, self.height-1)
             y = random.randint(0, self.width-1)
             print(f"Placed fuel can at {x}, {y}")
-            self.entities[x][y] = FuelCan(0, x, y, [Sprite(0, 0, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
+            self.entities[x][y] = FuelCan(self.grid, x, y, [Sprite(0, 64, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
     
     def get_entities(self):
         return self.entities

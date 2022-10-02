@@ -7,7 +7,7 @@ from config import Directions
 
 class Player(entity.Entity):
     STUN_COUNTER = 0
-    STUN_DURATION = 200
+    STUN_DURATION = 100
     ANIM_COUNTER = 0
     ANIM_DURATION = 10
 
