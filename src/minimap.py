@@ -147,6 +147,7 @@ class MiniMap:
 
         if self.state == MiniMapState.VISIBLE:
             self._draw_map()
+            self.static_screen.reset_time()
         else:
             self.static_screen.draw()
 
@@ -259,8 +260,10 @@ class StaticScreen:
         self.width = width
         self.height = height
         self.bars = [self.Bar(i, 3) for i in range(-5, height + 20, 5)]
+        self.elapsed_time = 0.0
 
     def update(self):
+        self.elapsed_time += 1 / FPS
         for bar in self.bars:
             if self.FRAME_COUNTER % 3 == 0:
                 bar.y +=1
@@ -274,9 +277,8 @@ class StaticScreen:
 
         for bar in self.bars:
             self._draw_static_bar(bar)
-
         pyxel.text(self.x + 10, self.y + self.height - 30, 
-                   "Radar\nReturning\nin 10s..", pyxel.COLOR_WHITE)
+                   f"Radar\nReturning\nin {10-int(self.elapsed_time)}s..", pyxel.COLOR_WHITE)
 
     def _draw_static_bar(self, bar):
         if (bar.y + 1) <= 0:
@@ -298,3 +300,6 @@ class StaticScreen:
             self.width // 2,
             bar.thickness,
             pyxel.COLOR_LIME)
+
+    def reset_time(self):
+        self.elapsed_time = 0
