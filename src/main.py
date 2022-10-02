@@ -34,7 +34,7 @@ class App:
     STARTED = False
 
     def __init__(self):
-        pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
+        pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Doug Dirt!', fps=FPS)
         pyxel.load("../assets/default.pyxres")  # load asset file with music/fx
         setup_image_bank()
 
@@ -186,7 +186,8 @@ class App:
         pyxel.cls(0)
         self.ui.draw()
         self.grid.draw()
-        self.draw_scanner()
+        if self.STARTED:
+            self.draw_scanner()
         self.draw_banner()
         self.minimap.draw()
         self.fuel.draw()
