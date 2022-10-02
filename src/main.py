@@ -59,6 +59,7 @@ class App:
         if pyxel.btnp(pyxel.KEY_R):
             self.FRAME_COUNTER = 0
             self.initialize_game_state()
+            self.ui.set_state(UiState.IN_PLAY)
             init_musak()
 
         # One-time blink out all the sprites
