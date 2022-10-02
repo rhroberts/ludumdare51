@@ -53,7 +53,14 @@ class App:
         self.fuel.draw()
         if self.grid.player.game_over:
             pyxel.text(100, 30, "GAME\nOVER!", 10)
+            for row in self.grid.entities:
+                for entity in row:
+                    if not isinstance(entity, Player):
+                        entity.set_visible()
         if self.grid.player.victory:
             pyxel.text(100, 30, "YOU\nWIN!", 10)
-
+            for row in self.grid.entities:
+                for entity in row:
+                    if not isinstance(entity, Player):
+                        entity.set_visible()
 App()
