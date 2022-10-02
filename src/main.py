@@ -30,6 +30,8 @@ class App:
     FRAME_COUNTER = 0
     ROW_COUNTER = GRID_ROWS - 1
     SCAN_DELAY = 0.5
+    BANNER_DELAY = 0.5
+    STARTED = False
 
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
@@ -39,7 +41,7 @@ class App:
         self.ui = UI()
 
         # Game state
-        self.scanning = True
+        self.scanning = False
         self.grid = None
         self.minimap = None
         self.fuel = None
@@ -95,13 +97,46 @@ class App:
             self.initialize_game_state()
             self.ui.set_state(UiState.IN_PLAY)
             init_musak()
+        if pyxel.btnp(pyxel.KEY_RETURN):
+            self.STARTED = True
+            self.scanning = True
 
         self.update_scanner()
+        self.FRAME_COUNTER += 1
 
         self.grid.update()
         self.minimap.update()
         self.fuel.update()
-        self.FRAME_COUNTER += 1
+
+    def draw_banner(self):
+        """ Draw message banner """
+        time = self.FRAME_COUNTER / FPS
+        if not self.STARTED and time >= self.BANNER_DELAY:
+            pyxel.rect(
+                WINDOW_WIDTH*0.2 - 2,
+                WINDOW_HEIGHT*0.4,
+                WINDOW_WIDTH*0.6 + 4,
+                WINDOW_HEIGHT*0.25 + 4,
+                10,
+            )
+            pyxel.rect(
+                WINDOW_WIDTH*0.2,
+                WINDOW_HEIGHT*0.4 + 2,
+                WINDOW_WIDTH*0.6,
+                WINDOW_HEIGHT*0.25,
+                0,
+            )
+            buffer = 5
+            pyxel.text(
+                WINDOW_WIDTH * 0.2 + buffer,
+                WINDOW_HEIGHT * 0.4 + 2 + buffer,
+                "Hey Doug Dirt! Find the buried \n"\
+                "treasure! Memorize the terrain and \n"\
+                "avoid obstacles!\n\n"\
+                "Use the radar to your advantage!\n\n"\
+                "Press ENTER to start!",
+                10,
+            )
 
     def draw_scanner(self):
         """ Draw rectangles for scanner """
@@ -152,6 +187,7 @@ class App:
         self.ui.draw()
         self.grid.draw()
         self.draw_scanner()
+        self.draw_banner()
         self.minimap.draw()
         self.fuel.draw()
         if self.fuel.fuel_level <= 0:
