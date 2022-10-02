@@ -30,7 +30,7 @@ class Player(entity.Entity):
                 new_n = self.n - self.speed
                 self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            if not self.game_over and self.moveable: 
+            if not self.game_over and self.moveable:
                 arrow = "→"
                 new_n = self.n + self.speed
                 self.direction = Directions.RIGHT
@@ -97,7 +97,7 @@ class Player(entity.Entity):
                 self.STUN_COUNTER = 0
                 self.stunned = False
                 self.moveable = True
-            
+
 
     def update_animation_frame(self):
         """ Determine frame in sprite sheet """
