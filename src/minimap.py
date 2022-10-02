@@ -60,7 +60,7 @@ class MiniMap:
         self.place_walls()
 
     def update(self):
-        # self._flip_visibility()
+        self._flip_visibility()
         if self.state == MiniMapState.NOT_VISIBLE:
             self.static_screen.update()
         self.update_interesting_objects()
