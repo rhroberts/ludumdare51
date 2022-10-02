@@ -52,11 +52,9 @@ class Grid:
         self.entities[m][n] = entity
 
     def reset(self, m, n):
-        """Set the entity on grid at m, n to dug dirt"""
-        self.set(
-            m, n,
-            Dirt(self, m, n, [Sprite(0, 16, 128, 16, 16)], dug=True)
-        )
+        """Set the entity on grid at m, n back to dirt"""
+        self.set(m, n, Dirt(self, m, n, [Sprite(0, 16, 128, 16, 16)]))
+        self.get(m, n).set_visible()
 
     def is_valid_position(self, m, n):
         """Check if m, n is a valid position on the grid."""
