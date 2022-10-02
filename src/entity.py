@@ -46,10 +46,11 @@ class Bomb(Entity):
 class CaveMoss(Entity):
     pass
 
+class FuelCan(Entity):
+    pass
 
 class Treasure(Entity):
     pass
-
 
 class Dirt(Entity):
     pass
