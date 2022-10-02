@@ -22,8 +22,8 @@ class RandomSpawner:
             print(f"Placed a bomb at {m}, {n}!")
             return Bomb(self.grid, m, n, [Sprite(
                 0,
-                128 + i * self.grid.pixel_dim,
-                0,
+                0 + i * self.grid.pixel_dim,
+                32,
                 self.grid.pixel_dim,
                 self.grid.pixel_dim)
                 for i in range(8)

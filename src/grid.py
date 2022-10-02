@@ -2,7 +2,7 @@ import pyxel
 from player import Player
 from sprite import Sprite
 from entity import Dirt, Bomb, CaveMoss
-from generator import RandomGenerator, RandomSpawner, MEDIUM_RANDOM_SPAWNER
+from generator import RandomGenerator, RandomSpawner, EASY_RANDOM_SPAWNER
 
 class Grid:
     def __init__(self, fuel, pixel_dim, width, height, row_start, col_start):
@@ -18,7 +18,7 @@ class Grid:
             self,
             self.width,
             self.height,
-            RandomSpawner(self, *MEDIUM_RANDOM_SPAWNER),
+            RandomSpawner(self, *EASY_RANDOM_SPAWNER),
             # seed=3
             )
         self.entities = gen_grid.get_entities()
