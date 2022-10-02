@@ -57,6 +57,7 @@ class Player(entity.Entity):
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
+                    pyxel.play(2, 15)  # fuel up!
                     if self.grid.fuel.fuel_level + FUEL_CAN_ADDER < 87.8:
                         self.grid.fuel.fuel_level += FUEL_CAN_ADDER
                     else:
@@ -69,6 +70,7 @@ class Player(entity.Entity):
                     self.grid.set(new_m, new_n, self)
                     print("Fuel acquired!")
                 case entity.Bomb:
+                    pyxel.playm(7)
                     other.set_visible()
                     bomb = self.grid.get(new_m, new_n)
                     bomb.detonate = True
