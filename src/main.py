@@ -41,10 +41,10 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def initialize_game_state(self):
-        self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
+        self.fuel = Fuel()
+        self.grid = Grid(self.fuel, GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                     GRID_COL_START)
         self.minimap = MiniMap(self.grid)
-        self.fuel = Fuel()
 
     def update(self):
         if pyxel.btn(pyxel.KEY_Q):
