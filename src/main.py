@@ -23,8 +23,8 @@ def setup_image_bank():
 
 def init_musak():
     # pyxel.play(3, 8, loop=True)  # drill drone
-    #pyxel.playm(0, loop=True)  # muzak
-    pass
+    pyxel.playm(0, loop=True)  # muzak
+
 
 class App:
     FRAME_COUNTER = 0
