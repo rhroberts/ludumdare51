@@ -84,8 +84,8 @@ class Player(entity.Entity):
                     other.set_visible()
                 case entity.CaveMoss:
                     pyxel.play(2, 10)  # drill got stuck!
-                    other.set_visible()
                     cave_moss = self.grid.get(new_m, new_n)
+                    cave_moss.set_visible()
                     cave_moss.impact = True
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
@@ -116,7 +116,10 @@ class Player(entity.Entity):
 
     def update_animation_frame(self):
         """ Determine frame in sprite sheet """
-        self.frame = self.direction*2 + (1 if self.ANIM_COUNTER <= self.ANIM_DURATION/2 else 0)
+        if self.stunned:
+            self.frame = self.direction*3 + 2
+        else:
+            self.frame = self.direction*3 + (1 if self.ANIM_COUNTER <= self.ANIM_DURATION/2 else 0)
 
     def update(self):
         """ Update Player """

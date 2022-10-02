@@ -27,7 +27,7 @@ class Grid:
         self.player = Player(self, 0, 10, [
             Sprite(
                 0, i * self.pixel_dim, 0, self.pixel_dim, self.pixel_dim
-            ) for i in range(8)
+            ) for i in range(12)
         ])
         self.set(self.player.m, self.player.n, self.player)
 

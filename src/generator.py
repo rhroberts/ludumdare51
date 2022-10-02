@@ -26,7 +26,7 @@ class RandomSpawner:
                 32,
                 self.grid.pixel_dim,
                 self.grid.pixel_dim)
-                for i in range(8)
+                for i in range(12)
                 ])
         elif value < (self.bombs + self.cave_moss):
             print(f"Placed cave moss at {m}, {n}!")
