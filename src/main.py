@@ -29,7 +29,6 @@ class App:
         self.grid = Grid(self.fuel, GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
         self.minimap = MiniMap(self.grid)
-        self.fuel = Fuel()
         pyxel.play(3, 8, loop=True)  # drill drone
         pyxel.playm(0, loop=True)  # muzak
         pyxel.run(self.update, self.draw)

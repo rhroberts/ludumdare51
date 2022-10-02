@@ -62,10 +62,10 @@ class Player(entity.Entity):
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
                     pyxel.play(2, 15)  # fuel up!
-                    if self.grid.fuel.fuel_level + FUEL_CAN_ADDER < 87.8:
+                    if self.grid.fuel.fuel_level + FUEL_CAN_ADDER < self.grid.fuel.WIDTH-2:
                         self.grid.fuel.fuel_level += FUEL_CAN_ADDER
                     else:
-                        self.grid.fuel.fuel_level = 87.8
+                        self.grid.fuel.fuel_level = self.grid.fuel.WIDTH-2
                     other.set_visible()
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
