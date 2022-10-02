@@ -1,7 +1,3 @@
-
-
-from re import L
-from turtle import color
 import pyxel
 
 
