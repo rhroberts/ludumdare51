@@ -34,8 +34,6 @@ class App:
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
 
-        Timer.update()
-        
         self.grid.update()
         self.minimap.update()
         self.fuel.update()
