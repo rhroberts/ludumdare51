@@ -2,7 +2,7 @@ import pyxel
 from player import Player
 from sprite import Sprite
 from entity import Dirt, Bomb, CaveMoss
-
+from generator import RandomGenerator, RandomSpawner, MEDIUM_RANDOM_SPAWNER
 
 class Grid:
     def __init__(self, pixel_dim, width, height, row_start, col_start):
@@ -11,14 +11,17 @@ class Grid:
         self.height = height
         self.row_start = row_start
         self.col_start = col_start
-        # initialize grid with dirt
-        self.entities = [
-            [
-                Dirt(
-                    self, m, n, [Sprite(0, 0, 128, 16, 16)]
-                ) for n in range(self.width)
-            ] for m in range(self.height)
-        ]
+
+        # Generate random grid
+        gen_grid = RandomGenerator(
+            self,
+            self.width,
+            self.height,
+            RandomSpawner(self, *MEDIUM_RANDOM_SPAWNER),
+            seed=3
+            )
+        self.entities = gen_grid.get_entities()
+
         # init player
         self.player = Player(self, 0, 10, [
             Sprite(
@@ -26,21 +29,6 @@ class Grid:
             ) for i in range(8)
         ])
         self.set(self.player.m, self.player.n, self.player)
-        # init a bomb (TO BE REMOVED)
-        self.bomb = Bomb(self, 2, 10, [
-            Sprite(
-                0, 128 + i * self.pixel_dim, 0, self.pixel_dim, self.pixel_dim
-            ) for i in range(8)
-        ])
-        self.set(self.bomb.m, self.bomb.n, self.bomb)
-        # init a cave_moss (TO BE REMOVED)
-        self.cave_moss = CaveMoss(self, 10, 3, [
-            Sprite(
-                0, self.pixel_dim + i * self.pixel_dim, self.pixel_dim, self.pixel_dim, self.pixel_dim
-            ) for i in range(2)
-        ])
-        self.set(self.cave_moss.m, self.cave_moss.n, self.cave_moss)
-        
 
     def get(self, m, n):
         """Get the entity on the grid at m, n"""
@@ -52,7 +40,7 @@ class Grid:
 
     def reset(self, m, n):
         """Set the entity on grid at m, n back to dirt"""
-        self.set(m, n, Dirt(self, m, n, [Sprite(0, 0, 128, 16, 16)]))
+        self.set(m, n, Dirt(self, m, n, [Sprite(0, 16, 128, 16, 16)]))
 
     def is_valid_position(self, m, n):
         """Check if m, n is a valid position on the grid."""
@@ -64,8 +52,8 @@ class Grid:
     def update(self):
         self.player.update()
         # TO BE REMOVED
-        self.bomb.update()
-        self.cave_moss.update()
+        # self.bomb.update()
+        # self.cave_moss.update()
 
     def draw(self):
         """Iterate over entities and call their draw() method"""
