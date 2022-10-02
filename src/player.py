@@ -54,6 +54,12 @@ class Player(entity.Entity):
                         self.n = new_n
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
+                case entity.FuelCan:
+                    self.grid.reset(self.m, self.n)
+                    self.m = new_m
+                    self.n = new_n
+                    print(arrow, new_m, new_n)
+                    self.grid.set(new_m, new_n, self)
                 case entity.Bomb:
                     bomb = self.grid.get(new_m, new_n)
                     bomb.detonate = True
