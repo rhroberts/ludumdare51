@@ -27,22 +27,26 @@ class Player(entity.Entity):
         if pyxel.btnp(pyxel.KEY_LEFT):
             if not self.game_over and self.moveable:
                 arrow = "←"
-                new_n = self.n - self.speed
+                if self.direction == Directions.LEFT:
+                    new_n = self.n - self.speed
                 self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
             if not self.game_over and self.moveable:
                 arrow = "→"
-                new_n = self.n + self.speed
+                if self.direction == Directions.RIGHT:
+                    new_n = self.n + self.speed
                 self.direction = Directions.RIGHT
         if pyxel.btnp(pyxel.KEY_UP):
             if not self.game_over and self.moveable:
                 arrow = "↑"
-                new_m = self.m - self.speed
+                if self.direction == Directions.UP:
+                    new_m = self.m - self.speed
                 self.direction = Directions.UP
         if pyxel.btnp(pyxel.KEY_DOWN):
             if not self.game_over and self.moveable:
                 arrow = "↓"
-                new_m = self.m + self.speed
+                if self.direction == Directions.DOWN:
+                    new_m = self.m + self.speed
                 self.direction = Directions.DOWN
 
         if self.grid.is_valid_position(new_m, new_n):

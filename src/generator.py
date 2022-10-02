@@ -6,7 +6,7 @@ from config import NUM_FUEL_CANS
 
 EASY_RANDOM_SPAWNER = (0.1, 0.1, 0.1)
 MEDIUM_RANDOM_SPAWNER = (0.1, 0.2, 0.2)
-HARD_RANDOM_SPAWNER = (0.2, 0.2, 0.2)
+HARD_RANDOM_SPAWNER = (0.2, 0.2, 0.1)
 
 
 class RandomSpawner:
@@ -74,7 +74,7 @@ class RandomGenerator:
             for j in range(self.width):
                 val = random.randint(0, 100)
                 entity = self.spawner.get_placement(val / 100., i, j)
-                print(f"Spawned {entity} at {i}, {j}")
+                # print(f"Spawned {entity} at {i}, {j}")
                 self.entities[i].append(entity)
 
         self.place_fuel_cans()
@@ -92,7 +92,7 @@ class RandomGenerator:
             x = random.randint(0, self.height-1)
             y = random.randint(0, self.width-1)
             print(f"Placed fuel can at {x}, {y}")
-            self.entities[x][y] = FuelCan(self.grid, x, y, [Sprite(0, 0, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
+            self.entities[x][y] = FuelCan(self.grid, x, y, [Sprite(0, 64, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
     
     def get_entities(self):
         return self.entities
