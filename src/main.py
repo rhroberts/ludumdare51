@@ -24,6 +24,7 @@ def setup_image_bank():
 class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
+        pyxel.load("../assets/default.pyxres")  # load asset file with music/fx
         setup_image_bank()
 
         self.ui = UI()
@@ -33,6 +34,9 @@ class App:
         self.minimap = None
         self.fuel = None
         self.initialize_game_state()
+
+        pyxel.play(3, 8, loop=True)  # drill drone
+        pyxel.playm(0, loop=True)  # muzak
 
         pyxel.run(self.update, self.draw)
 
@@ -56,7 +60,7 @@ class App:
                         entity.set_not_visible()
 
         self.grid.update()
-        self.minimap.update() 
+        self.minimap.update()
         self.fuel.update()
 
     def draw(self):
@@ -65,13 +69,17 @@ class App:
         self.grid.draw()
         self.minimap.draw()
         self.fuel.draw()
+        if self.fuel.fuel_level <= 0:
+            self.grid.player.game_over = True
         if self.grid.player.game_over:
+            self.fuel.time_decr = 0
             pyxel.text(100, 30, "GAME\nOVER!", 10)
             for row in self.grid.entities:
                 for entity in row:
                     if not isinstance(entity, Player):
                         entity.set_visible()
         if self.grid.player.victory:
+            self.fuel.time_decr = 0
             pyxel.text(100, 30, "YOU\nWIN!", 10)
             for row in self.grid.entities:
                 for entity in row:

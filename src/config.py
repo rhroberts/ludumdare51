@@ -8,6 +8,7 @@ GRID_ROW_START = 4  # row to start drawing grid
 GRID_COL_START = 1  # col to start drawing grid
 FPS = 60
 NUM_FUEL_CANS = 2
+FUEL_CAN_ADDER = 50
 
 
 class Directions:

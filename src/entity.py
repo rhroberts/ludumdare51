@@ -1,4 +1,5 @@
 from typing import List
+import random
 from sprite import Sprite
 
 
@@ -36,6 +37,7 @@ class Bomb(Entity):
 
     def __init__(self, grid, m, n, sprite: List[Sprite]):
         super().__init__(grid, m, n, sprite)
+        self.frame = random.randint(0, 4)
         self.transition_frame = 5
         self.transitioned = False
         self.detonate = False

@@ -2,10 +2,11 @@ import pyxel
 from player import Player
 from sprite import Sprite
 from entity import Dirt, Bomb, CaveMoss
-from generator import RandomGenerator, RandomSpawner, MEDIUM_RANDOM_SPAWNER
+from generator import RandomGenerator, RandomSpawner, EASY_RANDOM_SPAWNER
 
 class Grid:
-    def __init__(self, pixel_dim, width, height, row_start, col_start):
+    def __init__(self, fuel, pixel_dim, width, height, row_start, col_start):
+        self.fuel = fuel
         self.pixel_dim = pixel_dim
         self.width = width
         self.height = height
@@ -17,7 +18,7 @@ class Grid:
             self,
             self.width,
             self.height,
-            RandomSpawner(self, *MEDIUM_RANDOM_SPAWNER),
+            RandomSpawner(self, *EASY_RANDOM_SPAWNER),
             # seed=3
             )
         self.entities = gen_grid.get_entities()
@@ -26,7 +27,7 @@ class Grid:
         self.player = Player(self, 0, 10, [
             Sprite(
                 0, i * self.pixel_dim, 0, self.pixel_dim, self.pixel_dim
-            ) for i in range(8)
+            ) for i in range(12)
         ])
         self.set(self.player.m, self.player.n, self.player)
 
@@ -63,9 +64,10 @@ class Grid:
 
     def update(self):
         self.player.update()
-        # TO BE REMOVED
-        # self.bomb.update()
-        # self.cave_moss.update()
+        for n in range(0, self.width):
+            for m in range(0, self.height):
+                if isinstance(self.entities[m][n], Bomb):
+                    self.entities[m][n].update()
 
     def draw(self):
         """Iterate over entities and call their draw() method"""

@@ -2,7 +2,7 @@ from typing import List
 import pyxel
 import entity
 from sprite import Sprite
-from config import Directions
+from config import Directions, FUEL_CAN_ADDER
 
 
 class Player(entity.Entity):
@@ -27,28 +27,33 @@ class Player(entity.Entity):
         if pyxel.btnp(pyxel.KEY_LEFT):
             if not self.game_over and self.moveable:
                 arrow = "←"
-                new_n = self.n - self.speed
+                if self.direction == Directions.LEFT:
+                    new_n = self.n - self.speed
                 self.direction = Directions.LEFT
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            if not self.game_over and self.moveable: 
+            if not self.game_over and self.moveable:
                 arrow = "→"
-                new_n = self.n + self.speed
+                if self.direction == Directions.RIGHT:
+                    new_n = self.n + self.speed
                 self.direction = Directions.RIGHT
         if pyxel.btnp(pyxel.KEY_UP):
             if not self.game_over and self.moveable:
                 arrow = "↑"
-                new_m = self.m - self.speed
+                if self.direction == Directions.UP:
+                    new_m = self.m - self.speed
                 self.direction = Directions.UP
         if pyxel.btnp(pyxel.KEY_DOWN):
             if not self.game_over and self.moveable:
                 arrow = "↓"
-                new_m = self.m + self.speed
+                if self.direction == Directions.DOWN:
+                    new_m = self.m + self.speed
                 self.direction = Directions.DOWN
 
         if self.grid.is_valid_position(new_m, new_n):
             other = self.grid.get(new_m, new_n)
             match type(other):
                 case entity.Dirt:
+                    pyxel.play(2, 9)  # drill through it!
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
                         self.m = new_m
@@ -56,13 +61,20 @@ class Player(entity.Entity):
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
+                    pyxel.play(2, 15)  # fuel up!
+                    if self.grid.fuel.fuel_level + FUEL_CAN_ADDER < self.grid.fuel.WIDTH-2:
+                        self.grid.fuel.fuel_level += FUEL_CAN_ADDER
+                    else:
+                        self.grid.fuel.fuel_level = self.grid.fuel.WIDTH-2
                     other.set_visible()
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
                     self.n = new_n
                     print(arrow, new_m, new_n)
                     self.grid.set(new_m, new_n, self)
+                    print("Fuel acquired!")
                 case entity.Bomb:
+                    pyxel.playm(7)
                     other.set_visible()
                     bomb = self.grid.get(new_m, new_n)
                     bomb.detonate = True
@@ -71,8 +83,9 @@ class Player(entity.Entity):
                 case entity.Granite:
                     other.set_visible()
                 case entity.CaveMoss:
-                    other.set_visible()
+                    pyxel.play(2, 10)  # drill got stuck!
                     cave_moss = self.grid.get(new_m, new_n)
+                    cave_moss.set_visible()
                     cave_moss.impact = True
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
@@ -99,11 +112,14 @@ class Player(entity.Entity):
                 self.STUN_COUNTER = 0
                 self.stunned = False
                 self.moveable = True
-            
+
 
     def update_animation_frame(self):
         """ Determine frame in sprite sheet """
-        self.frame = self.direction*2 + (1 if self.ANIM_COUNTER <= self.ANIM_DURATION/2 else 0)
+        if self.stunned:
+            self.frame = self.direction*3 + 2
+        else:
+            self.frame = self.direction*3 + (1 if self.ANIM_COUNTER <= self.ANIM_DURATION/2 else 0)
 
     def update(self):
         """ Update Player """
