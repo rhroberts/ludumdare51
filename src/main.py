@@ -10,6 +10,7 @@ from config import (
     GRID_COL_START,
     FPS
 )
+from fuel import Fuel
 from minimap import MiniMap
 from grid import Grid
 from timer import Timer
@@ -26,6 +27,7 @@ class App:
         self.grid = Grid(GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
         self.minimap = MiniMap()
+        self.fuel = Fuel()
 
         Timer.start()
         pyxel.run(self.update, self.draw)
@@ -35,15 +37,15 @@ class App:
             pyxel.quit()
 
         Timer.update()
-
+        
         self.grid.update()
         self.minimap.update()
-
+        self.fuel.update()
 
     def draw(self):
         pyxel.cls(0)
         self.grid.draw()
         self.minimap.draw()
-
+        self.fuel.draw()
 
 App()
