@@ -13,6 +13,7 @@ from config import (
 from fuel import Fuel
 from minimap import MiniMap
 from grid import Grid
+from player import Player
 
 
 def setup_image_bank():
@@ -33,6 +34,13 @@ class App:
     def update(self):
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
+
+        # One-time blink out all the sprites
+        if pyxel.frame_count / FPS == 3:
+            for row in self.grid.entities:
+                for entity in row:
+                    if not isinstance(entity, Player):
+                        entity.set_not_visible()
 
         self.grid.update()
         self.minimap.update() 

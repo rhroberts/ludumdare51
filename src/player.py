@@ -46,7 +46,8 @@ class Player(entity.Entity):
                 self.direction = Directions.DOWN
 
         if self.grid.is_valid_position(new_m, new_n):
-            match type(self.grid.get(new_m, new_n)):
+            other = self.grid.get(new_m, new_n)
+            match type(other):
                 case entity.Dirt:
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
@@ -55,17 +56,20 @@ class Player(entity.Entity):
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
+                    entity.set_visible()
                     self.grid.reset(self.m, self.n)
                     self.m = new_m
                     self.n = new_n
                     print(arrow, new_m, new_n)
                     self.grid.set(new_m, new_n, self)
                 case entity.Bomb:
+                    other.set_visible()
                     bomb = self.grid.get(new_m, new_n)
                     bomb.detonate = True
                     self.game_over = True
                     print("Game over!")
                 case entity.CaveMoss:
+                    other.set_visible()
                     cave_moss = self.grid.get(new_m, new_n)
                     cave_moss.impact = True
                     if not self.game_over and self.moveable:
@@ -78,6 +82,7 @@ class Player(entity.Entity):
                         self.moveable = False
                     print("You've been cave moss'd!")
                 case entity.Treasure:
+                    other.set_visible()
                     self.moveable = False
                     self.victory = True
                     print("You win!")

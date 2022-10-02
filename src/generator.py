@@ -92,7 +92,7 @@ class RandomGenerator:
             x = random.randint(0, self.height-1)
             y = random.randint(0, self.width-1)
             print(f"Placed fuel can at {x}, {y}")
-            self.entities[x][y] = FuelCan(self.grid, x, y, [Sprite(0, 64, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
+            self.entities[x][y] = FuelCan(self.grid, x, y, [Sprite(0, 0, 16, self.grid.pixel_dim, self.grid.pixel_dim)])
     
     def get_entities(self):
         return self.entities

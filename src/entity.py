@@ -8,11 +8,27 @@ class Entity:
         self.m = m
         self.n = n
         self.sprite = sprite
+        self.cached_sprite = sprite
         self.frame = 0
+        self.visible = True
 
     def update(self):
         pass
 
+    def set_visible(self):
+        self.visible = True
+        self.sprite = self.cached_sprite
+
+    def set_not_visible(self):
+        # Re-use self.sprite so draw calls keep working :-)
+        self.visible = False
+        self.cached_sprite = self.sprite
+        self.sprite = [Sprite(
+                0,
+                0,
+                128,
+                self.grid.pixel_dim,
+                self.grid.pixel_dim) for _ in range(len(self.cached_sprite))]
 
 class Bomb(Entity):
     ANIM_COUNTER = 0
