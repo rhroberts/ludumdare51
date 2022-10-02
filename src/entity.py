@@ -1,6 +1,5 @@
 from typing import List
 from sprite import Sprite
-import ipdb
 
 
 class Entity:
@@ -45,21 +44,7 @@ class Bomb(Entity):
             self.update_animation_frame()
 
 class CaveMoss(Entity):
-    ANIM_COUNTER = 0
-    ANIM_DURATION = 10
-
-    def __init__(self, grid, m, n, sprite: List[Sprite]):
-        super().__init__(grid, m, n, sprite)
-        self.impact = False
-    
-    def increment_animation_counter(self):
-        """ Progress animation counter. Reset if above animation duration. """
-        self.ANIM_COUNTER = self.ANIM_COUNTER + 1 if self.ANIM_COUNTER < self.ANIM_DURATION else 0
-    
-    def update_animation_frame(self):
-        """ Determine frame in sprite sheet """
-        ipdb.set_trace()
-
+    pass
 
 class FuelCan(Entity):
     pass

@@ -6,6 +6,8 @@ from config import Directions
 
 
 class Player(entity.Entity):
+    STUN_COUNTER = 0
+    STUN_DURATION = 200
     ANIM_COUNTER = 0
     ANIM_DURATION = 10
 
@@ -15,6 +17,7 @@ class Player(entity.Entity):
         self.speed = 1
         self.frame = 2*self.direction
         self.moveable = True
+        self.stunned = False
         self.game_over = False
 
     def move_sprite(self):
@@ -55,12 +58,32 @@ class Player(entity.Entity):
                     bomb.detonate = True
                     self.game_over = True
                     print("Game over!")
+                case entity.CaveMoss:
+                    cave_moss = self.grid.get(new_m, new_n)
+                    cave_moss.impact = True
+                    if not self.game_over and self.moveable:
+                        self.grid.reset(self.m, self.n)
+                        self.m = new_m
+                        self.n = new_n
+                        print(arrow, new_m, new_n)
+                        self.grid.set(new_m, new_n, self)
+                        self.stunned = True
+                        self.moveable = False
+                    print("You've been cave moss'd!")
                 case entity.Treasure:
                     print("You win!")
 
     def increment_animation_counter(self):
-        """ Progress animation counter. Reset if above animation duration. """
+        """ Progress counter. Reset if above duration. """
         self.ANIM_COUNTER = self.ANIM_COUNTER + 1 if self.ANIM_COUNTER < self.ANIM_DURATION else 0
+        if self.stunned:
+            if self.STUN_COUNTER < self.STUN_DURATION:
+                self.STUN_COUNTER += 1
+            else:
+                self.STUN_COUNTER = 0
+                self.stunned = False
+                self.moveable = True
+            
 
     def update_animation_frame(self):
         """ Determine frame in sprite sheet """
