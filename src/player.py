@@ -53,6 +53,7 @@ class Player(entity.Entity):
             other = self.grid.get(new_m, new_n)
             match type(other):
                 case entity.Dirt:
+                    pyxel.play(2, 9)  # drill through it!
                     if not self.game_over and self.moveable:
                         self.grid.reset(self.m, self.n)
                         self.m = new_m
@@ -60,6 +61,7 @@ class Player(entity.Entity):
                         print(arrow, new_m, new_n)
                         self.grid.set(new_m, new_n, self)
                 case entity.FuelCan:
+                    pyxel.play(2, 15)  # fuel up!
                     if self.grid.fuel.fuel_level + FUEL_CAN_ADDER < 87.8:
                         self.grid.fuel.fuel_level += FUEL_CAN_ADDER
                     else:
@@ -72,6 +74,7 @@ class Player(entity.Entity):
                     self.grid.set(new_m, new_n, self)
                     print("Fuel acquired!")
                 case entity.Bomb:
+                    pyxel.playm(7)
                     other.set_visible()
                     bomb = self.grid.get(new_m, new_n)
                     bomb.detonate = True
@@ -80,6 +83,7 @@ class Player(entity.Entity):
                 case entity.Granite:
                     other.set_visible()
                 case entity.CaveMoss:
+                    pyxel.play(2, 10)  # drill got stuck!
                     other.set_visible()
                     cave_moss = self.grid.get(new_m, new_n)
                     cave_moss.impact = True

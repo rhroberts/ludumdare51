@@ -23,12 +23,15 @@ def setup_image_bank():
 class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, title='Dig, Dig, Digger!', fps=FPS)
+        pyxel.load("../assets/default.pyxres")  # load asset file with music/fx
         setup_image_bank()
         self.fuel = Fuel()
         self.grid = Grid(self.fuel, GRID_PIXEL_DIM, GRID_COLS, GRID_ROWS, GRID_ROW_START,
                          GRID_COL_START)
         self.minimap = MiniMap(self.grid)
-
+        self.fuel = Fuel()
+        pyxel.play(3, 8, loop=True)  # drill drone
+        pyxel.playm(0, loop=True)  # muzak
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -43,7 +46,7 @@ class App:
                         entity.set_not_visible()
 
         self.grid.update()
-        self.minimap.update() 
+        self.minimap.update()
         self.fuel.update()
 
     def draw(self):
