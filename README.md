@@ -22,3 +22,7 @@ The filepaths you specify will be copied into the package app directly, so copyi
 ```pyxel package . src/main.py```
 
 `pyxel` will generate an app file named `.pyxapp`. So far, I don't know how to give it a sane name, so rename that file to whatever you like with the `.pyxapp` extension. You know, something like `dug_dirt.pyxapp`..
+
+## Deployment
+
+We use github pages to host, so the game is hosted at `https://rhroberts.github.io/ludumdare51/`. To deploy, package up the game and push it to the `gh-pages` branch. That's it!
