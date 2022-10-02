@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from enum import Enum
 
 import pyxel
@@ -14,8 +13,11 @@ TRAIL = pyxel.COLOR_GRAY
 
 
 class MiniMapState(Enum):
-    VISIBLE = 1,
-    NOT_VISIBLE = 2
+    VISIBLE = 2,
+    NOT_VISIBLE = 10
+    
+    def __init__(self, visible_time: int):
+        self.visible_time = visible_time
 
 
 class MiniMap:
@@ -47,14 +49,13 @@ class MiniMap:
         self.place_walls()
 
     def update(self):
-        # retrieve updated player path and update interal timer / flip state
-
+        # TODO: retrieve updated player path
         elapsed_seconds = (pyxel.frame_count - self.previous_frame_count) / FPS
 
-        if (self.state == MiniMapState.NOT_VISIBLE and elapsed_seconds == 10):
+        if (self.state == MiniMapState.NOT_VISIBLE and self.state.visible_time == elapsed_seconds):
             self.state = MiniMapState.VISIBLE
             self.previous_frame_count = pyxel.frame_count
-        elif (self.state == MiniMapState.VISIBLE and elapsed_seconds == 1):
+        elif (self.state == MiniMapState.VISIBLE and self.state.visible_time == elapsed_seconds):
             self.state = MiniMapState.NOT_VISIBLE
             self.previous_frame_count = pyxel.frame_count
 
