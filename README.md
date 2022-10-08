@@ -1,4 +1,6 @@
-# Ludum Dare 51
+# Ludum Dare 51 - It's Doug Dirt!
+
+<img src="./assets/opening_screenshot.png" alt="Opening Screen Image" width="450" height="450">
 
 ## Development Setup
 
