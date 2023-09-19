@@ -28,3 +28,11 @@ The filepaths you specify will be copied into the package app directly, so copyi
 ## Deployment
 
 We use github pages to host, so the game is hosted at `https://rhroberts.github.io/ludumdare51/`. To deploy, package up the game and push it to the `gh-pages` branch. That's it!
+
+## Gameplay
+
+<img src="./assets/gameplay.gif" alt="Gameplay Example" width="450" height="450">
+
+Find the buried treasure! Memorize the terrain and avoid obstacles! Use the radar to your advantage!
+
+Utilize `WASD` for movement and `R` to restart.
