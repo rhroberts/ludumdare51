@@ -35,4 +35,4 @@ We use github pages to host, so the game is hosted at `https://rhroberts.github.
 
 Find the buried treasure! Memorize the terrain and avoid obstacles! Use the radar to your advantage!
 
-Utilize `WASD` for movement and `R` to reset.
+Utilize `WASD` for movement and `R` to restart.
